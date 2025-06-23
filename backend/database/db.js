@@ -24,6 +24,8 @@ const conectionInitialDatabase = async ()=>{
 
         await connect.query(`CREATE DATABASE IF NOT EXISTS ${connection.database}`);
         await connect.query(`USE ${connection.database}`);
+    }catch(err){
+        console.error("Error: ", err);        
     }
 }
 
