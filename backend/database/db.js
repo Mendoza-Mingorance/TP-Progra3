@@ -65,7 +65,7 @@ const conectionInitialDatabase = async () => {
     }
 };
 
-conectionInitialDatabase();
+//conectionInitialDatabase();
 
 export { connection, conectionInitialDatabase };
 
