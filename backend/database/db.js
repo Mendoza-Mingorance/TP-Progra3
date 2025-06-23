@@ -29,8 +29,14 @@ const conectionInitialDatabase = async ()=>{
         await connect.query(`USE ${connection.database}`);
 
         const scriptSQL = fs.writeFileSync(path.join(__dirname, 'schema.sql'), 'utf8')
-
         await connect.query(scriptSQL)
+
+        //Posiblemente condicionarlo a que solo insert los haga en Desarrollo
+        const insertsSQL = fs.writeFileSync(path.join(__dirname, 'inserts.sql'), 'utf8')
+        await connect.query(insertsSQL)
+        console.log('database initialized successfully...');
+        
+        
     }catch(err){
         throw new Error("Error de conexion de DB: ", err)       
     }
