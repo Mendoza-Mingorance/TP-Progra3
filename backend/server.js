@@ -7,13 +7,10 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-app.use('/api', indexRouter)
+app.use('/', indexRouter)
 
 app.set("view engine", "ejs")
 
-app.use('/', (req,res)=>{
-    res.render('index')
-})
 app.listen(config.port, ()=>{
     console.log(`Server running in ${config.port}`);
 })

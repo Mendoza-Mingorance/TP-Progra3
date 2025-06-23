@@ -1,6 +1,4 @@
-import connection from "../database/db"
-
-
+import connection from "../database/db.js"
 
 export const getProducts = async (req, res) =>{
     try {
@@ -14,6 +12,11 @@ export const getProducts = async (req, res) =>{
     } catch (err) {
         
     }
+}
+
+export const getProductById = async(req, res) =>{
+    const id = req.params.id
+    res.json({message: `trayendo producto id ${id}`})
 }
 
 export const createProduct = async (req, res) =>{
