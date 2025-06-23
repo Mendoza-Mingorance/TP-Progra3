@@ -2,15 +2,12 @@ import connection from "../database/db.js"
 
 export const getProducts = async (req, res) =>{
     try {
-        res.json({message: "trayendo productos"})
+        //res.json({message: "trayendo productos"})
         let sql = `SELECT * FROM products`
         const [rows] = await connection.query(sql)
-        res.status(200).json({
-            
-        })
-        
+        res.status(200).json(rows)        
     } catch (err) {
-        
+        console.error("Error al traer los Productos: ", err)
     }
 }
 
