@@ -19,7 +19,7 @@ const connection = mysql.createPool({
 const conectionInitialDatabase = async ()=>{
     let connect;
     try{
-        connect = mysql.createConnection({
+        connect = await mysql.createConnection({
             host: db.host,
             user: db.user,
             password:db.password,
@@ -28,11 +28,11 @@ const conectionInitialDatabase = async ()=>{
         await connect.query(`CREATE DATABASE IF NOT EXISTS ${connection.database}`);
         await connect.query(`USE ${connection.database}`);
 
-        const scriptSQL = fs.writeFileSync(path.join(__dirname, 'schema.sql'), 'utf8')
+        const scriptSQL = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8')
         await connect.query(scriptSQL)
 
         //Posiblemente condicionarlo a que solo insert los haga en Desarrollo
-        const insertsSQL = fs.writeFileSync(path.join(__dirname, 'inserts.sql'), 'utf8')
+        const insertsSQL = fs.readFileSync(path.join(__dirname, 'inserts.sql'), 'utf8')
         await connect.query(insertsSQL)
         console.log('database initialized successfully...');
         
@@ -42,6 +42,4 @@ const conectionInitialDatabase = async ()=>{
     }
 }
 
-conectionInitialDatabase();
-
-export default connection;
+export  {connection, conectionInitialDatabase};
