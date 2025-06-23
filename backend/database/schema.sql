@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS categories(
+CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL UNIQUE,
     description VARCHAR(255),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -16,15 +16,14 @@ CREATE TABLE IF NOT EXISTS products (
     stock INT DEFAULT 0,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_category) REFERENCES categorias(id)
+    FOREIGN KEY (id_category) REFERENCES categories(id)
 );
-
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    mail VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM("admin", "manager", "employee")
+    role ENUM('admin', 'manager', 'employee'),
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -33,16 +32,16 @@ CREATE TABLE IF NOT EXISTS sales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name_client VARCHAR(55) NOT NULL,
     amount_total DECIMAL(10,2) NOT NULL,
-    payment_method ENUM("cash","credit_card", "debit_card", "transfer") NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    payment_method ENUM('cash','credit_card', 'debit_card', 'transfer') NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS products_sales(
+CREATE TABLE IF NOT EXISTS products_sales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_products INT NOT NULL,
     id_sales INT NOT NULL,
     quantity INT NOT NULL DEFAULT 1,
     amount_unit DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (id_products) REFERENCES products(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_sales) REFERENCES sales(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_sales) REFERENCES sales(id) ON DELETE CASCADE
 );
