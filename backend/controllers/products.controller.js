@@ -1,8 +1,11 @@
+import connection from "../database/db"
 
 
 
 export const getProducts = async (req, res) =>{
     res.json({message: "trayendo productos"})
+    let sql = `SELECT * FROM products`
+    const [rows] = await connection.query(sql)
 }
 
 export const createProduct = async (req, res) =>{
