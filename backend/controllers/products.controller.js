@@ -25,8 +25,26 @@ export const getProductById = async(req, res) =>{
 }
 
 export const createProduct = async (req, res) =>{
-    const {name} = req.body
-    res.json({message: `producto de nombre ${name} fue creado`})
+    try {
+        const {name, price, description, active} = req.body
+        
+        const sql = 'INSERT INTO products (name, price, description, active) VALUES (?, ?, ?, ?)';
+        const values = [name, price, description, active];
+
+        const [result] = await connection.query(sql, values);
+
+        res.status(200).json({ message: `Producto creado con éxito`, payload: {
+            id: result.insertId,
+            name,
+            price,
+            description,
+            active
+        }
+        });
+
+    } catch (error) {
+        res.status(500).json({message: "Internal server error. Couldn't create product"})   
+    }
 }
 
 export const updateProduct = async (req,res) =>{

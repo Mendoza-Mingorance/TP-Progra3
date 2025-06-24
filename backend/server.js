@@ -14,6 +14,7 @@ app.use('/', indexRouter)
 app.set("view engine", "ejs")
 
 await sqlConnection()
+await conectionInitialDatabase()
 app.listen(config.port, ()=>{
     console.log(`Server running in ${config.port}`);
 })

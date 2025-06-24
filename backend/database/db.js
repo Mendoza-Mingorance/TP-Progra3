@@ -38,7 +38,8 @@ export const conectionInitialDatabase = async () => {
             password: db.password,
         }); //Creo la conexion temporal en caso de que no este creada la base de datos
 
-        await connectTemp.query(`CREATE DATABASE IF NOT EXISTS ${db.name}`);
+        await connectTemp.query(`CREATE DATABASE IF NOT EXISTS \`${db.name}\``);
+
         await connectTemp.end();
 
         const connect = await connection.getConnection(); //Tomo la conexion ya hecha en el CreatePool para hacer los inserts
