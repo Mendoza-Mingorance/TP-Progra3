@@ -11,6 +11,52 @@ export const getProducts = async (req, res) => {
     }
 };
 
+export const getProductsActive = async (req, res) => {
+    try {
+        const validationStock = `UPDATE product SET available = 'out of stock' WHERE stock <= 0 and available != 'out of stock'`;
+        await connection.query(validationStock);
+
+        const sql = `SELECT * FROM products WHERE available = "active"`;
+        const [rows] = await connection.query(sql);
+
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error('Error trayendo productos:', err.message);
+        res.status(500).json({ message: "Internal server error. Couldn't get products" });
+    }
+};
+
+export const getProductsInactive = async (req, res) => {
+    try {
+        const sql = `SELECT * FROM products WHERE available = "inactive"`;
+        const [rows] = await connection.query(sql);
+
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error('Error trayendo productos:', err.message);
+        res.status(500).json({ message: "Internal server error. Couldn't get products" });
+    }
+};
+
+export const changeProductsAvailable = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const status = req.body;
+
+        const statusValid = ['active', 'inactive'];
+        if (!statusValid.includes(status)) {
+            return res.status(400).json({ message: 'Estado no válido.' });
+        }
+
+        const sql = `UPDATE products SET available = ? WHERE id = ?`;
+        await connection.query(sql, [status, id]);
+        res.status(200).json({ message: `Producto ${id} cambio de estatus a ${status}` });
+    } catch (err) {
+         console.error('Error actualizando productos:', err.message);
+        res.status(500).json({ message: "Internal server error. Couldn't update products" });
+    }
+};
+
 export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -113,7 +159,6 @@ export const updateProduct = async (req, res) => {
             message: `Producto con id: ${id} se actualizo con exito`,
             payload: updated[0],
         });
-
     } catch (err) {
         console.error('Error actualizando producto:', err.message);
         res.status(500).json({ message: "Internal server error. Couldn't update product" });
@@ -132,7 +177,7 @@ export const deleteProduct = async (req, res) => {
             });
         }
 
-        res.status(200).json({ message: `Producto de ID: ${id} eliminado.`});
+        res.status(200).json({ message: `Producto de ID: ${id} eliminado.` });
     } catch (err) {
         console.error('Error: ', err);
         res.status(500).json({ message: "Internal server error. Couldn't create product" });
