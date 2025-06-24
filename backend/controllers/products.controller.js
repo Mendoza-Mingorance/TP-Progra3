@@ -52,7 +52,7 @@ export const changeProductsAvailable = async (req, res) => {
         await connection.query(sql, [status, id]);
         res.status(200).json({ message: `Producto ${id} cambio de estatus a ${status}` });
     } catch (err) {
-         console.error('Error actualizando productos:', err.message);
+        console.error('Error actualizando productos:', err.message);
         res.status(500).json({ message: "Internal server error. Couldn't update products" });
     }
 };
@@ -74,15 +74,9 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
-        const {
-            name,
-            price,
-            description,
-            url_image,
-            id_category,
-            available = 'active',
-            stock = 0,
-        } = req.body;
+        const { name, price, description, id_category, stock = 0 } = req.body;
+        const available = stock <= 0 ? 'out of stock' : 'active'
+        const url_image = req.body.filename;
 
         const validStatus = ['active', 'inactive', 'out of stock'];
 
