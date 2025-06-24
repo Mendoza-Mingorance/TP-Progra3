@@ -29,7 +29,6 @@ export const sqlConnection = async () =>{
     }
 }
 
-// esta funcion te funciona cuando la ejecutas? a mi me rompe 
 export const conectionInitialDatabase = async () => {
     try {
         const connectTemp = await mysql.createConnection({
