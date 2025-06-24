@@ -1,13 +1,13 @@
-import connection from "../database/db.js"
+import {connection} from "../database/db.js"
 
 export const getProducts = async (req, res) =>{
     try {
-        //res.json({message: "trayendo productos"})
-        let sql = `SELECT * FROM products`
+        const sql = `SELECT * FROM products`
         const [rows] = await connection.query(sql)
         res.status(200).json(rows)        
     } catch (err) {
-        console.error("Error al traer los Productos: ", err)
+        console.error("Error trayendo productos:",err.message);
+        res.status(500).json({message: "Internal server error. Couldn't get products"})
     }
 }
 
@@ -16,10 +16,11 @@ export const getProductById = async(req, res) =>{
         const {id} = req.params
         const sql = `SELECT * FROM products WHERE id = ?`
         const [rows] = await connection.query(sql,[id])
-        // res.json({message: `trayendo producto id ${id}`})
-        res.status(200).json(rows)
+
+        rows.length > 0 ? res.status(200).json(rows) : res.status(404).json({message: `producto de id ${id} no encontrado`})
     } catch (err) {
-        console.error("Error al traer los Productos: ", err)
+        console.error("Error trayendo producto:",err.message);
+        res.status(500).json({message: "Internal server error. Couldn't get product"})
     }
 }
 

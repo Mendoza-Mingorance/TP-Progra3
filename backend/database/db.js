@@ -9,15 +9,28 @@ const __dirname = path.dirname(__filename);
 
 const { db } = config;
 
-const connection = mysql.createPool({
+export const connection = mysql.createPool({
     host: db.host,
     database: db.name,
     user: db.user,
     password: db.password,
+    port: db.port, // agregue esta linea por que yo estoy levantando mysql en puerto distinto del 3306 (puerto por defecto cuando no se especifica) para que no me entre en conflicto con otros proyectos que tengo abiertos. No deberia cambiarte nada si usas el puerto 3306. Cualquier cosa comentame.
     waitForConnections: true,
 });
 
-const conectionInitialDatabase = async () => {
+// hice esta funcion para poder corroborar la conexion con la base de datos cuando levanto el servidor.
+export const sqlConnection = async () =>{
+    try {
+      const dbConnection = await connection.getConnection();
+      console.log("Conectado a MySQL");
+      dbConnection.release();
+    } catch (err) {
+      console.error("No se pudo conectar con MySQL:", err.message);
+    }
+}
+
+// esta funcion te funciona cuando la ejecutas? a mi me rompe 
+export const conectionInitialDatabase = async () => {
     try {
         const connectTemp = await mysql.createConnection({
             host: db.host,
@@ -65,7 +78,6 @@ const conectionInitialDatabase = async () => {
     }
 };
 
-//conectionInitialDatabase();
 
-export { connection, conectionInitialDatabase };
+
 
