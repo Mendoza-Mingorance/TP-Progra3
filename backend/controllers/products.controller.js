@@ -13,7 +13,8 @@ export const getProducts = async (req, res) => {
 
 export const getProductsActive = async (req, res) => {
     try {
-        const validationStock = `UPDATE product SET available = 'out of stock' WHERE stock <= 0 and available != 'out of stock'`;
+        const validationStock = `UPDATE products SET available = 'out of stock' WHERE stock <= 0 and available != 'out of stock'`;
+
         await connection.query(validationStock);
 
         const sql = `SELECT * FROM products WHERE available = "active"`;
@@ -41,7 +42,7 @@ export const getProductsInactive = async (req, res) => {
 export const changeProductsAvailable = async (req, res) => {
     try {
         const { id } = req.params;
-        const status = req.body;
+        const {status} = req.body;
 
         const statusValid = ['active', 'inactive'];
         if (!statusValid.includes(status)) {
@@ -76,7 +77,7 @@ export const createProduct = async (req, res) => {
     try {
         const { name, price, description, id_category, stock = 0 } = req.body;
         const available = stock <= 0 ? 'out of stock' : 'active'
-        const url_image = req.body.filename;
+        const url_image = req.file?.filename || "";
 
         const validStatus = ['active', 'inactive', 'out of stock'];
 
