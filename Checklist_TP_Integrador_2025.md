@@ -2,9 +2,9 @@
 # ✅ Checklist TP Integrador 2025 - Autoservicio
 
 ## 🧱 1. BASE GENERAL
-- [ ] Elegir un rubro que NO sea comida
-- [ ] Definir dos categorías coherentes
-- [ ] Crear logo, nombre de la empresa y favicon
+- [x] Elegir un rubro que NO sea comida
+- [x] Definir dos categorías coherentes
+- [x] Crear logo, nombre de la empresa y favicon
 
 ## 💻 2. FRONTEND – Cliente (Autoservicio)
 
@@ -30,7 +30,7 @@
 ## 🔧 3. BACKEND – Admin + API
 
 ### 🔐 Autenticación
-- [ ] Login con email y password (encriptado)
+- [x] Login con email y password (encriptado)
 - [ ] Botón de acceso rápido
 - [ ] Middleware para proteger rutas admin
 - [ ] Registro de logs de login (extra final)
@@ -40,19 +40,19 @@
 - [ ] Dashboard: lista de productos activos/inactivos por categoría
 - [ ] Alta producto: con imagen
 - [ ] Editar producto: con nueva imagen
-- [ ] Eliminar producto (baja lógica)
-- [ ] Activar producto inactivo
+- [x] Eliminar producto (baja lógica)
+- [x] Activar producto inactivo
 - [ ] Botón para descargar ventas en Excel
 - [ ] Pantalla registros con estadísticas y logs (extra final)
 
 ### 🧠 Lógica API (responde en JSON)
-- [ ] Rutas RESTful (MVC)
-- [ ] CRUD productos
+- [x] Rutas RESTful (MVC)
+- [x] CRUD productos
 - [ ] Carga de imágenes
 - [ ] Crear y listar ventas con productos (M:N)
-- [ ] Crear usuarios admin
+- [x] Crear usuarios admin
 - [ ] Validaciones con middleware
-- [ ] Paginación de productos
+- [x] Paginación de productos
 - [ ] Listar encuestas (extra)
 - [ ] Descargar encuestas (extra)
 
@@ -64,9 +64,9 @@
 - [ ] Modal de agradecimiento al enviar
 
 ## 📦 5. BASE DE DATOS
-- [ ] Crear tablas: productos, usuarios, ventas, ventas_productos, extras (encuestas, logs)
-- [ ] Relaciones bien definidas con claves foráneas
-- [ ] Migraciones o script de creación
+- [x] Crear tablas: productos, usuarios, ventas, ventas_productos, extras (encuestas, logs)
+- [x] Relaciones bien definidas con claves foráneas
+- [x] Migraciones o script de creación
 
 ## 🔁 6. TESTEO FINAL
 - [ ] Probar flujo completo del cliente
