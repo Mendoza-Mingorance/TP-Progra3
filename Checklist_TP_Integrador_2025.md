@@ -47,7 +47,6 @@
 
 ### 🧠 Lógica API (responde en JSON)
 - [ ] Rutas RESTful (MVC)
-- [ ] ORM (Sequelize o similar)
 - [ ] CRUD productos
 - [ ] Carga de imágenes
 - [ ] Crear y listar ventas con productos (M:N)
@@ -65,18 +64,11 @@
 - [ ] Modal de agradecimiento al enviar
 
 ## 📦 5. BASE DE DATOS
-- [ ] Crear tablas: productos, usuarios, ventas, ventas_productos, encuestas, logs
+- [ ] Crear tablas: productos, usuarios, ventas, ventas_productos, extras (encuestas, logs)
 - [ ] Relaciones bien definidas con claves foráneas
 - [ ] Migraciones o script de creación
 
-## 📂 6. DEPLOY Y PRESENTACIÓN
-- [ ] Hostear backend
-- [ ] Hostear frontend
-- [ ] Enlace visible entre cliente y admin
-- [ ] Instrucciones de testeo claras
-- [ ] Repositorio limpio y ordenado
-
-## 🔁 7. TESTEO FINAL
+## 🔁 6. TESTEO FINAL
 - [ ] Probar flujo completo del cliente
 - [ ] Probar flujo completo del admin
 - [ ] Productos inactivos no aparecen al cliente
