@@ -47,7 +47,7 @@ export const getProducts = async (req, res) => {
         }
 
         //Ordenamientos por nombre, precio y stock
-        const sortsSwitch = sortValids.includes(sort) ? sort : null;
+        const sortsSwitch = sortValids.includes(sort) ? sort : 'name';
         if (sortsSwitch) {
             const diretion = orderValid.includes(order?.toLowerCase())
                 ? order.toUpperCase()
