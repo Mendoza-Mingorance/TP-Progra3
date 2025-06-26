@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Listado de Productos</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Productos disponibles</h1>
+
+  <% if (products.length > 0) { %>
+    <ul>
+      <% products.forEach(product => { %>
+        <li>
+          <strong><%= product.name %></strong><br>
+          Precio: $<%= product.price %><br>
+          Stock: <%= product.stock %><br>
+          Categoría: <%= product.id_category %><br>
+          Disponible: <%= product.available ? 'Sí' : 'No' %>
+        </li>
+        <hr>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>No se encontraron productos.</p>
+  <% } %>
+</body>
+</html>

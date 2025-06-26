@@ -14,11 +14,10 @@ export const connection = mysql.createPool({
     database: db.name,
     user: db.user,
     password: db.password,
-    port: db.port, // agregue esta linea por que yo estoy levantando mysql en puerto distinto del 3306 (puerto por defecto cuando no se especifica) para que no me entre en conflicto con otros proyectos que tengo abiertos. No deberia cambiarte nada si usas el puerto 3306. Cualquier cosa comentame.
+    port: db.port, 
     waitForConnections: true,
 });
 
-// hice esta funcion para poder corroborar la conexion con la base de datos cuando levanto el servidor.
 export const sqlConnection = async () =>{
     try {
       const dbConnection = await connection.getConnection();
