@@ -12,15 +12,14 @@ export const validatePassword = (password, storedPassword) => {
 }
 
 
-// JWT
-const PRIVATE_KEY = config.jwtSign
+// JWT 
 export const generateToken = (user) => {
-    return jwt.sign({ user }, PRIVATE_KEY, { expiresIn: "24h" })
+    return jwt.sign({ user }, config.jwtSign, { expiresIn: "24h" })
 }
 
 export const verifyToken = (token) =>{
     try {
-        const tokenData = jwt.verify(token, PRIVATE_KEY)
+        const tokenData = jwt.verify(token, config.jwtSign)
         return tokenData
     } catch (error) {
         console.error("Invalid token: ",error.message);

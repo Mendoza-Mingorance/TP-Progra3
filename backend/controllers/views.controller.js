@@ -1,17 +1,19 @@
 import { fetchProducts } from "../services/products.services.js";
+import { verifyToken } from "../utils/utils.js";
 
 export const loginView = (req, res) =>{
-    res.render('login')
+    const token = verifyToken(req.cookies.jwt)
+    
+    token? res.redirect('dashboard'): res.render('login')
 }
 
 export const dashboardView = async (req, res) =>{
-        try {
+    try {
         const products = await fetchProducts(req.query);
-        res.render('dashboard', { products });
+        res.status(200).render('dashboard', { products });
     } catch (error) {
         res.status(500).render('error', { message: 'No se pudieron cargar los productos' });
     }
-    res.render('dashboard')
 }
 
 export const createProductView = async (req, res) =>{
