@@ -2,9 +2,8 @@ import { fetchProducts } from "../services/products.services.js";
 import { verifyToken } from "../utils/utils.js";
 
 export const loginView = (req, res) =>{
-    const token = verifyToken(req.cookies.jwt)
-    
-    token? res.redirect('dashboard'): res.render('login')
+    const token = verifyToken(req.cookies.jwt)  
+    token? res.redirect('/admin/dashboard'): res.render('login')
 }
 
 export const dashboardView = async (req, res) =>{

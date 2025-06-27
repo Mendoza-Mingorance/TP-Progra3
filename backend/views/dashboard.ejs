@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Listado de Productos</title>
-</head>
-<body>
-  <h1>Productos</h1>
-
-  <% if (products.length > 0) { %>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Listado de Productos</title>
+  </head>
+  <body>
+    <h1>Productos</h1>
+    <button onclick="logout()">Logout</button>
+    <% if (products.length > 0) { %>
     <ul>
       <% products.forEach(product => { %>
-        <li>
-          <strong><%= product.name %></strong><br>
-          Precio: $<%= product.price %><br>
-        </li>
-        <hr>
+      <li>
+        <strong><%= product.name %></strong><br />
+        Precio: $<%= product.price %><br />
+      </li>
+      <hr />
       <% }) %>
     </ul>
-  <% } else { %>
+    <% } else { %>
     <p>No se encontraron productos.</p>
-  <% } %>
-</body>
+    <% } %>
+
+    <script>
+      const logout = async() => {
+        await fetch("/api/users/logout", { method: "POST" });
+        window.location.href = "/admin";
+      }
+    </script>
+  </body>
 </html>

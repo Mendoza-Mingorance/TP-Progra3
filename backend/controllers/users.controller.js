@@ -46,3 +46,8 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Internal server error. Couldn't login" });
   }
 };
+
+export const logout = (req, res) => {
+  res.clearCookie('jwt');
+  res.redirect('/login');
+};
