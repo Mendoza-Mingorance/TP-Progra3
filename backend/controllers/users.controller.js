@@ -1,5 +1,5 @@
 import { connection } from "../database/db.js";
-import { createHash, validatePassword } from "../utils/utils.js";
+import { createHash, generateToken, validatePassword } from "../utils/utils.js";
 
 
 export const registerUser = async (req, res) =>{
@@ -27,7 +27,7 @@ export const login = async (req, res) => {
     const [rows] = await connection.query(sql, email);
 
     if (rows.length === 0) {
-      return res.status(404).json({ message: 'Credenciales incorrectas' });
+      return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
 
     const user = rows[0];
@@ -37,9 +37,17 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
 
-    res.status(200).json({ message: `Usuario ${email} logueado`, payload: user });
+    const token = generateToken(user);
+    res.cookie('jwt', token, { httpOnly: true, sameSite: 'Strict' });
+
+    res.status(200).redirect('/admin/dashboard');
   } catch (error) {
     console.error('Error al loguearse:', error.message);
     res.status(500).json({ message: "Internal server error. Couldn't login" });
   }
+};
+
+export const logout = (req, res) => {
+  res.clearCookie('jwt');
+  res.redirect('/login');
 };
