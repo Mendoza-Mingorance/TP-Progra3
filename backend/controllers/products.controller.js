@@ -1,39 +1,37 @@
 import { connection } from '../database/db.js';
-import { fetchProducts } from '../services/products.services.js';
+import { createProductModel, deleteProductModel, fetchActiveProductsModel, fetchInactiveProductsModel, fetchProductByID, fetchProductsModel, updateProductModel, updateProductStatus } from '../models/products.model.js';
 
 export const getProducts = async (req, res) => {
     try {
-        const products = await fetchProducts(req.query);
+        const products = await fetchProductsModel(req.query);
         res.status(200).json(products);
     } catch (error) {
+        console.error('Error trayendo productos:', err.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
 export const getProductsActive = async (req, res) => {
     try {
+        /* Habria que mover esta validacion para otro lado */
         const validationStock = `UPDATE products SET available = 'out of stock' WHERE stock <= 0 and available != 'out of stock'`;
-
         await connection.query(validationStock);
-
-        const sql = `SELECT * FROM products WHERE available = "active"`;
-        const [rows] = await connection.query(sql);
-
+        /* ---------------- */
+        
+        const [rows] = await fetchActiveProductsModel()
         res.status(200).json(rows);
     } catch (err) {
-        console.error('Error trayendo productos:', err.message);
+        console.error('Error trayendo productos activos:', err.message);
         res.status(500).json({ message: "Internal server error. Couldn't get products" });
     }
 };
 
 export const getProductsInactive = async (req, res) => {
     try {
-        const sql = `SELECT * FROM products WHERE available = "inactive"`;
-        const [rows] = await connection.query(sql);
-
+        const rows = await fetchInactiveProductsModel()
         res.status(200).json(rows);
     } catch (err) {
-        console.error('Error trayendo productos:', err.message);
+        console.error('Error trayendo productos inactivos:', err.message);
         res.status(500).json({ message: "Internal server error. Couldn't get products" });
     }
 };
@@ -48,11 +46,10 @@ export const changeProductsAvailable = async (req, res) => {
             return res.status(400).json({ message: 'Estado no válido.' });
         }
 
-        const sql = `UPDATE products SET available = ? WHERE id = ?`;
-        await connection.query(sql, [status, id]);
+        await updateProductStatus(status, id)
         res.status(200).json({ message: `Producto ${id} cambio de estatus a ${status}` });
     } catch (err) {
-        console.error('Error actualizando productos:', err.message);
+        console.error('Error actualizando available status del producto:', err.message);
         res.status(500).json({ message: "Internal server error. Couldn't update products" });
     }
 };
@@ -60,21 +57,19 @@ export const changeProductsAvailable = async (req, res) => {
 export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const sql = `SELECT * FROM products WHERE id = ?`;
-        const [rows] = await connection.query(sql, [id]);
-
+        const rows = await fetchProductByID(id)
         rows.length > 0
             ? res.status(200).json(rows)
             : res.status(404).json({ message: `producto de id ${id} no encontrado` });
     } catch (err) {
-        console.error('Error trayendo producto:', err.message);
+        console.error('Error trayendo producto por id:', err.message);
         res.status(500).json({ message: "Internal server error. Couldn't get product" });
     }
 };
 
 export const createProduct = async (req, res) => {
     try {
-        const { name, price, description, id_category, stock = 0 } = req.body;
+        const { name, price, description, id_category, stock } = req.body;
         const available = stock <= 0 ? 'out of stock' : 'active';
         const url_image = req.file?.filename || '';
 
@@ -90,13 +85,9 @@ export const createProduct = async (req, res) => {
         ) {
             return res.status(400).json({ message: 'Datos incompletos o incorrectos' });
         }
-
-        const sql =
-            'INSERT INTO products (name, price, description, url_image, id_category, available, stock) VALUES (?, ?, ?, ?,?, ?, ?)';
-        const values = [name, price, description, url_image, id_category, available, stock];
-
-        const [result] = await connection.query(sql, values);
-
+        
+        const result = await createProductModel(name, price, description, url_image, id_category, available, stock);
+        
         res.status(200).json({
             message: `Producto creado con éxito`,
             payload: {
@@ -111,7 +102,8 @@ export const createProduct = async (req, res) => {
             },
         });
     } catch (error) {
-        res.status(500).json({ message: "Internal server error. Couldn't create product" });
+        console.error('Error creando producto:', error.message);
+        res.status(500).json({ message: "Internal server error. Couldn't create product." });
     }
 };
 
@@ -128,18 +120,7 @@ export const updateProduct = async (req, res) => {
             return res.status(400).json({ message: 'No hay datos para actualizar' });
         }
 
-        const columns = [];
-        const values = [];
-
-        for (const key in fields) {
-            columns.push(`${key} = ?`);
-            values.push(fields[key]);
-        }
-
-        values.push(id);
-
-        const sql = `UPDATE products SET ${columns.join(', ')} WHERE id = ?`;
-        const [result] = await connection.query(sql, values);
+        const result = await updateProductModel(id, fields);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({
@@ -147,7 +128,7 @@ export const updateProduct = async (req, res) => {
             });
         }
 
-        const [updated] = await connection.query(`SELECT * FROM products WHERE id = ?`, [id]);
+        const updated = await fetchProductByID(id);
 
         res.status(200).json({
             message: `Producto con id: ${id} se actualizo con exito`,
@@ -162,9 +143,7 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const sql = `DELETE FROM products WHERE id = ?`;
-        const [result] = await connection.query(sql, [id]);
-
+        const result = await deleteProductModel(id)
         if (result.affectedRows === 0) {
             return res.status(404).json({
                 message: `Producto con id: ${id} no encontrado`,
@@ -173,7 +152,7 @@ export const deleteProduct = async (req, res) => {
 
         res.status(200).json({ message: `Producto de ID: ${id} eliminado.` });
     } catch (err) {
-        console.error('Error: ', err);
+        console.error('Error eliminando producto: ', err);
         res.status(500).json({ message: "Internal server error. Couldn't create product" });
     }
 };

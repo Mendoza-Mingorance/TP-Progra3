@@ -1,4 +1,4 @@
-import { connection } from "../database/db.js";
+import { getUserByEmailModel, registerUserModel } from "../models/users.model.js";
 import { createHash, generateToken, validatePassword } from "../utils/utils.js";
 
 
@@ -6,14 +6,11 @@ export const registerUser = async (req, res) =>{
     try {
         const {email, password} = req.body
         const hashedPassword = createHash(password)
-        const values = [email, hashedPassword];
-        const sql = 'INSERT INTO users (email, password) VALUES (?, ?)';
-
-        await connection.query(sql, values);
+        await registerUserModel(email, hashedPassword)
 
         res.status(200).json({message: `Usuario ${email} registrado`})
     } catch (error) {
-        console.error("Error trayendo productos:",error.message);  
+        console.error("Error en controlador registrando usuario:",error.message);  
         res.status(500).json({message: "Internal server error. Couldn't register user"})
     }
 }
@@ -23,14 +20,13 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const sql = 'SELECT * FROM users WHERE email = ?';
-    const [rows] = await connection.query(sql, email);
-
-    if (rows.length === 0) {
+    const user = await getUserByEmailModel(email);
+    console.log(user);
+    
+    if (!user) {
       return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
 
-    const user = rows[0];
     const checkPassword = validatePassword(password, user.password);
 
     if (!checkPassword) {

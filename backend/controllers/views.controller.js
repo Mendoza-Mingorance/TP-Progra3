@@ -1,4 +1,4 @@
-import { fetchProducts } from "../services/products.services.js";
+import { fetchProductsModel } from "../models/products.model.js";
 import { verifyToken } from "../utils/utils.js";
 
 export const loginView = (req, res) =>{
@@ -9,7 +9,7 @@ export const loginView = (req, res) =>{
 export const dashboardView = async (req, res) =>{
     try {
         const adminData = req.user
-        const products = await fetchProducts(req.query);
+        const products = await fetchProductsModel(req.query);
         res.status(200).render('dashboard', { products, adminData });
     } catch (error) {
         res.status(500).render('error', { message: 'No se pudieron cargar los productos' });
