@@ -2,30 +2,39 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
     <title>Listado de Productos</title>
+    <script src="/js/script.js" defer></script>
   </head>
   <body>
-    <h1>Productos</h1>
-    <button onclick="logout()">Logout</button>
-    <% if (products.length > 0) { %>
-    <ul>
-      <% products.forEach(product => { %>
-      <li>
-        <strong><%= product.name %></strong><br />
-        Precio: $<%= product.price %><br />
-      </li>
-      <hr />
-      <% }) %>
-    </ul>
-    <% } else { %>
-    <p>No se encontraron productos.</p>
-    <% } %>
+    <%- include('partials/header') %>
+    <main>
+      <h1>Dashboard</h1>
+      <% if (products.length > 0) { %>
+      <ul class="product-list">
+        <% products.forEach(product => { %>
+        <li>
+          <div>
+            <p><strong><%= product.name %></strong></p>
+            <p>Precio: $<%= product.price %></p>
+            <p>Stock: <%= product.stock %> unidades</p>
+          </div>
+          <div class="actions">
+            <button class="activateBtn"><img src="/assets/alta-arrow.svg" alt="alta producto"></button>  
+            <button class="editBtn"><img src="/assets/edit.svg" alt="editar producto"></button>  
+            <button class="deleteBtn"><img src="/assets/trash-can.svg" alt="baja producto"></button>  
+          </div>
+        </li>
+        <hr />
+        <% }) %>
+      </ul>
+      <% } else { %>
+      <p>No se encontraron productos.</p>
+      <% } %>
+    </main>
 
-    <script>
-      const logout = async() => {
-        await fetch("/api/users/logout", { method: "POST" });
-        window.location.href = "/admin";
-      }
-    </script>
+    <%- include('partials/footer') %>
+    
   </body>
 </html>

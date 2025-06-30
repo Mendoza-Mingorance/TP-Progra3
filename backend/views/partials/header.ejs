@@ -1,13 +1,17 @@
 <header>
     <nav>
-        <div>
-            <h3>Logo</h3>
+        <div class="logo-container">
+            <img class="logo" src="/assets/logo-min.png" alt="">
         </div>
         <ul>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/altas">New Product</a></li>
-            <li><a href="/modificaciones">Update Product</a></li>
-            <li><a href="/users">Users</a></li>
+            <li><a href="/admin/dashboard">Dashboard</a></li>
+            <li><a href="/admin/altas">New Product</a></li>
+            <li><a href="/admin/modificaciones">Update Product</a></li>
+            <li><a href="/admin/usuarios">Users</a></li>
         </ul>
+        <div class="admin-data">
+            <p>Hola <%= adminData.email %>!</p>
+            <button class="logoutBtn" onclick="logout()">Logout</button>
+        </div>
     </nav>
 </header>

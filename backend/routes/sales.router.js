@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { createSales, exportSaleExcel, getSales, getSalesWithProducts } from '../controllers/sales.controller.js';
+import { createSale, exportSaleExcel, getSaleById, getSales, getSalesWithProducts } from '../controllers/sales.controller.js';
 
 const router = Router();
 
-router.post('/', createSales)
+router.post('/', createSale)
 /* Estructura para probar ruta POST
 {  
   "name": "María Gonzalez",
@@ -14,10 +14,11 @@ router.post('/', createSales)
   ]
 }
 */ 
-router.get('/',getSales);
-router.get('/products',getSalesWithProducts)
+router.get('/', getSales);
+router.get('/products', getSalesWithProducts)
 
 // Probas la ruta directamente en el navegador http://localhost:8080/api/sales/export
-router.get('/export',exportSaleExcel)
+router.get('/export', exportSaleExcel)
+router.get('/:id', getSaleById)
 
 export default router;

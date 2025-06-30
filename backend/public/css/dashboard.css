@@ -1,0 +1,36 @@
+
+.product-list{
+    list-style: none;
+    padding: 15px ;
+}
+
+.product-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.actions{
+    display: flex;
+    gap: 10px;
+}
+
+.actions button{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    object-fit: contain;
+}
+
+.deleteBtn{
+    width: 25px;
+}
+
+.editBtn{
+    width: 28px;
+}
+
+.activateBtn{
+    width: 25px;
+}

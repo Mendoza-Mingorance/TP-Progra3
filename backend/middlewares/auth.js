@@ -6,6 +6,6 @@ export const auth = (req, res, next) => {
 
   if (!userData) return res.redirect('/admin');
 
-  req.user = userData;
+  req.user = userData.user;
   next();
 }

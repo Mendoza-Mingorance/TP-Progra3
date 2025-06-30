@@ -1,11 +1,10 @@
-import { connection } from '../database/db.js';
 import ExcelJS from 'exceljs';
+import { createSaleModel, fetchSaleByID, fetchSalesModel, fetchSalesWithProductsModel } from '../models/sales.model.js';
+import { fetchProductByID } from '../models/products.model.js';
 
 export const getSales = async (req, res) => {
     try {
-        const sql = `SELECT * FROM sales`;
-        const [result] = await connection.query(sql);
-
+        const result = await fetchSalesModel();
         res.status(200).json(result);
     } catch (err) {
         console.error('Error trayendo ventas: ', err.message);
@@ -15,24 +14,7 @@ export const getSales = async (req, res) => {
 
 export const getSalesWithProducts = async (req, res) => {
     try {
-        const sql = `
-        SELECT 
-        s.id as saleid,
-        s.name_client,
-        s.amount_total,
-        s.payment_method,
-        s.createdAt,
-        ps.id_products,
-        ps.quantity,
-        ps.amount_unit,
-        p.name as productname,
-        p.url_image
-        FROM sales s
-        JOIN products_sales ps ON s.id = ps.id_sales
-        JOIN products p ON ps.id_products = p.id
-        `;
-        const [result] = await connection.query(sql);
-        // console.log(result);
+        const result = await fetchSalesWithProductsModel();
         const salesObj = {};
         for (const ele of result) {
             if (!salesObj[ele.saleid]) {
@@ -62,7 +44,40 @@ export const getSalesWithProducts = async (req, res) => {
     }
 };
 
-export const createSales = async (req, res) => {
+export const getSaleById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await fetchSaleByID(id);
+
+        const saleObj = {};
+        for (const ele of result) {
+            if (!saleObj[ele.saleid]) {
+                saleObj[ele.saleid] = {
+                    id: ele.saleid,
+                    name_client: ele.name_client,
+                    amount_total: ele.amount_total,
+                    payment_method: ele.payment_method,
+                    createdAt: ele.createdAt,
+                    products: [],
+                };
+            }
+            saleObj[ele.saleid].products.push({
+                id: ele.id_products,
+                name: ele.productname,
+                quantity: ele.quantity,
+                amount_unit: ele.amount_unit,
+                image: ele.url_image,
+            });
+        }
+
+        res.status(200).json(saleObj);
+    } catch (err) {
+        console.error('Error trayendo venta por id: ', err.message);
+        res.status(500).json({ message: "Internal server error. Couldn't get sales" });
+    }
+}
+
+export const createSale = async (req, res) => {
     try {
         const { name, payment_method, products } = req.body;
 
@@ -74,76 +89,34 @@ export const createSales = async (req, res) => {
             !Array.isArray(products) ||
             products.length === 0
         ) {
-            return res.status(400).json({ message: 'Datos incompletos o invalidados' });
+            return res.status(400).json({ message: 'Datos incompletos o inválidos' });
         }
 
         for (const p of products) {
-            const [[resultStock]] = await connection.query(`SELECT * FROM products WHERE id = ?`, [
-                p.id,
-            ]);
-            if (!resultStock)
-                return res.status(404).json({ message: `Producto ${p.id} inexistente` });
-            if (resultStock.stock < p.quantity)
-                return res.status(404).json({ message: `Stock insuficiente` });
+            const product = await fetchProductByID(p.id);
+            if (!product)
+                return res.status(404).json({ message: `Producto con ID ${p.id} no encontrado` });
+            if (product.stock < p.quantity)
+                return res.status(400).json({ message: `Stock insuficiente para ${product.name}, id: ${p.id}` });
         }
 
         const total = products.reduce((acc, p) => acc + p.amount_unit * p.quantity, 0);
 
-        const [result] = await connection.query(
-            `INSERT INTO sales (name_client, amount_total, payment_method) VALUES (?,?,?)`,
-            [name, total, payment_method]
-        );
-
-        const salesId = result.insertId;
-
-        //Sacar resultUpdate cuando todo este funcionando
-        const resultUpdate = [];
-
-        for (const p of products) {
-            await connection.query(
-                `INSERT INTO products_sales(id_products,id_sales,quantity,amount_unit) VALUES (?,?,?,?)`,
-                [p.id, salesId, p.quantity, p.amount_unit]
-            );
-
-            await connection.query(
-                `UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?`,
-                [p.quantity, p.id, p.quantity]
-            );
-            //Verificacion provicional para ver si actualiza el stock
-            const [updated] = await connection.query(`SELECT * FROM products WHERE id = ?`, [p.id]);
-            resultUpdate.push(updated[0]);
-        }
+        const { saleId, resultUpdate } = await createSaleModel(name, total, payment_method, products);
 
         res.status(200).json({
             message: `Venta completada exitosamente por ${name}`,
-            id: salesId,
+            id: saleId,
             payload: resultUpdate,
         });
-    } catch (err) {
-        console.error('Error creando ventas: ', err.message);
-        res.status(500).json({ message: "Internal server error. Couldn't create sales" });
+    } catch (error) {
+        console.error('Error en controlador de ventas:', error.message);
+        res.status(500).json({ message: 'Error procesando la venta' });
     }
 };
-
 export const exportSaleExcel = async (req, res) => {
     try {
-        const sql = `
-        SELECT 
-            s.id as saleid,
-            s.name_client,
-            s.amount_total,
-            s.payment_method,
-            s.createdAt,
-            ps.id_products,
-            ps.quantity,
-            ps.amount_unit,
-            p.name as productname,
-            p.description
-        FROM sales s
-        JOIN products_sales ps ON s.id = ps.id_sales
-        JOIN products p ON ps.id_products = p.id
-        `;
-        const [result] = await connection.query(sql);
+        const result = await fetchSalesWithProductsModel();
 
         const bookExcel = new ExcelJS.Workbook(); //Se Crea archivo excel
         const sheetsExcel = bookExcel.addWorksheet('Ventas'); //Se crea la hoja
@@ -156,7 +129,6 @@ export const exportSaleExcel = async (req, res) => {
             { header: 'Metodo de Pago', key: 'payment_method', width: 15 },
             { header: 'Fecha', key: 'createdAt', width: 15 },
             { header: 'Producto', key: 'productname', width: 25 },
-            { header: 'Descripcion', key: 'description', width: 40 },
             { header: 'Cantidad', key: 'quantity', width: 10 },
             { header: 'Precio Unitario', key: 'amount_unit', width: 15 },
         ];
