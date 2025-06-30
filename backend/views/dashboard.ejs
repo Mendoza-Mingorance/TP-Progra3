@@ -2,25 +2,28 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/dashboard.css">
     <title>Listado de Productos</title>
+    <script src="/js/script.js" defer></script>
   </head>
   <body>
     <%- include('partials/header') %>
     <main>
-      <h1>Productos</h1>
-      <button onclick="logout()">Logout</button>
+      <h1>Dashboard</h1>
       <% if (products.length > 0) { %>
-      <ul>
+      <ul class="product-list">
         <% products.forEach(product => { %>
         <li>
           <div>
             <p><strong><%= product.name %></strong></p>
             <p>Precio: $<%= product.price %></p>
-            <p>Stock: $<%= product.stock %></p>
+            <p>Stock: <%= product.stock %> unidades</p>
           </div>
-          <div>
-            
+          <div class="actions">
+            <button class="activateBtn"><img src="/assets/alta-arrow.svg" alt="alta producto"></button>  
+            <button class="editBtn"><img src="/assets/edit.svg" alt="editar producto"></button>  
+            <button class="deleteBtn"><img src="/assets/trash-can.svg" alt="baja producto"></button>  
           </div>
         </li>
         <hr />
@@ -33,11 +36,5 @@
 
     <%- include('partials/footer') %>
     
-    <script>
-      const logout = async() => {
-        await fetch("/api/users/logout", { method: "POST" });
-        window.location.href = "/admin";
-      }
-    </script>
   </body>
 </html>
