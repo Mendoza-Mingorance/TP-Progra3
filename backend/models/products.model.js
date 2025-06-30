@@ -161,3 +161,14 @@ export const deleteProductModel = async (id) =>{
         throw new Error("Error eliminando producto en el modelo");
     }
 }
+
+export const validationStock = async () => {
+    try {
+        const sql = `UPDATE products SET available = 'out of stock' WHERE stock <= 0 and available != 'out of stock'`;
+        const [result] = await connection.query(sql);
+        return result
+    } catch (error) {
+        console.error('Error en modelo validando stock:', error.message);
+        throw new Error("Error validando stock en el modelo");
+    }
+}

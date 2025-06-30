@@ -1,5 +1,5 @@
-import { connection } from '../database/db.js';
-import { createProductModel, deleteProductModel, fetchActiveProductsModel, fetchInactiveProductsModel, fetchProductByID, fetchProductsModel, updateProductModel, updateProductStatus } from '../models/products.model.js';
+
+import { createProductModel, deleteProductModel, fetchActiveProductsModel, fetchInactiveProductsModel, fetchProductByID, fetchProductsModel, updateProductModel, updateProductStatus, validationStock } from '../models/products.model.js';
 
 export const getProducts = async (req, res) => {
     try {
@@ -13,10 +13,7 @@ export const getProducts = async (req, res) => {
 
 export const getProductsActive = async (req, res) => {
     try {
-        /* Habria que mover esta validacion para otro lado */
-        const validationStock = `UPDATE products SET available = 'out of stock' WHERE stock <= 0 and available != 'out of stock'`;
-        await connection.query(validationStock);
-        /* ---------------- */
+        await validationStock(); // -> revisar nombre de esta funcion
         
         const [rows] = await fetchActiveProductsModel()
         res.status(200).json(rows);
