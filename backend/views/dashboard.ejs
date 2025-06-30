@@ -2,25 +2,37 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/dashboard.css">
     <title>Listado de Productos</title>
   </head>
   <body>
-    <h1>Productos</h1>
-    <button onclick="logout()">Logout</button>
-    <% if (products.length > 0) { %>
-    <ul>
-      <% products.forEach(product => { %>
-      <li>
-        <strong><%= product.name %></strong><br />
-        Precio: $<%= product.price %><br />
-      </li>
-      <hr />
-      <% }) %>
-    </ul>
-    <% } else { %>
-    <p>No se encontraron productos.</p>
-    <% } %>
+    <%- include('partials/header') %>
+    <main>
+      <h1>Productos</h1>
+      <button onclick="logout()">Logout</button>
+      <% if (products.length > 0) { %>
+      <ul>
+        <% products.forEach(product => { %>
+        <li>
+          <div>
+            <p><strong><%= product.name %></strong></p>
+            <p>Precio: $<%= product.price %></p>
+            <p>Stock: $<%= product.stock %></p>
+          </div>
+          <div>
+            
+          </div>
+        </li>
+        <hr />
+        <% }) %>
+      </ul>
+      <% } else { %>
+      <p>No se encontraron productos.</p>
+      <% } %>
+    </main>
 
+    <%- include('partials/footer') %>
+    
     <script>
       const logout = async() => {
         await fetch("/api/users/logout", { method: "POST" });
