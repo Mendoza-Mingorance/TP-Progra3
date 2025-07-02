@@ -1,5 +1,14 @@
-
-import { createProductModel, deleteProductModel, fetchActiveProductsModel, fetchInactiveProductsModel, fetchProductByID, fetchProductsModel, updateProductModel, updateProductStatus, validationStock } from '../models/products.model.js';
+import {
+    createProductModel,
+    deleteProductModel,
+    fetchActiveProductsModel,
+    fetchInactiveProductsModel,
+    fetchProductByID,
+    fetchProductsModel,
+    updateProductModel,
+    updateProductStatus,
+    validationStock,
+} from '../models/products.model.js';
 
 export const getProducts = async (req, res) => {
     try {
@@ -14,8 +23,8 @@ export const getProducts = async (req, res) => {
 export const getProductsActive = async (req, res) => {
     try {
         await validationStock(); // -> revisar nombre de esta funcion
-        
-        const [rows] = await fetchActiveProductsModel()
+
+        const [rows] = await fetchActiveProductsModel();
         res.status(200).json(rows);
     } catch (err) {
         console.error('Error trayendo productos activos:', err.message);
@@ -25,7 +34,7 @@ export const getProductsActive = async (req, res) => {
 
 export const getProductsInactive = async (req, res) => {
     try {
-        const rows = await fetchInactiveProductsModel()
+        const rows = await fetchInactiveProductsModel();
         res.status(200).json(rows);
     } catch (err) {
         console.error('Error trayendo productos inactivos:', err.message);
@@ -43,7 +52,7 @@ export const changeProductsAvailable = async (req, res) => {
             return res.status(400).json({ message: 'Estado no válido.' });
         }
 
-        await updateProductStatus(status, id)
+        await updateProductStatus(status, id);
         res.status(200).json({ message: `Producto ${id} cambio de estatus a ${status}` });
     } catch (err) {
         console.error('Error actualizando available status del producto:', err.message);
@@ -54,7 +63,7 @@ export const changeProductsAvailable = async (req, res) => {
 export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const rows = await fetchProductByID(id)
+        const rows = await fetchProductByID(id);
         rows.length > 0
             ? res.status(200).json(rows)
             : res.status(404).json({ message: `producto de id ${id} no encontrado` });
@@ -66,25 +75,29 @@ export const getProductById = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
-        const { name, price, description, id_category, stock } = req.body;
+        let { name, price, description, id_category, stock } = req.body;
         const available = stock <= 0 ? 'out of stock' : 'active';
         const url_image = req.file?.filename || '';
 
-        const validStatus = ['active', 'inactive', 'out of stock'];
+        price = parseFloat(price);
+        id_category = parseInt(id_category, 10);
+        stock = parseInt(stock, 10);
 
-        if (
-            !name ||
-            !price ||
-            !description ||
-            !id_category ||
-            typeof stock != 'number' ||
-            !validStatus.includes(available)
-        ) {
+        if (!name || isNaN(price) || !description || isNaN(id_category) || isNaN(stock)) {
             return res.status(400).json({ message: 'Datos incompletos o incorrectos' });
         }
-        
-        const result = await createProductModel(name, price, description, url_image, id_category, available, stock);
-        
+
+        const result = await createProductModel(
+            name,
+            price,
+            description,
+            url_image,
+            id_category,
+            available,
+            stock
+        );
+
+        console.log(result);
         res.status(200).json({
             message: `Producto creado con éxito`,
             payload: {
@@ -107,10 +120,14 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
     try {
         const id = parseInt(req.params.id, 10);
-        const fields = req.body;
+        let fields = req.body;
 
         if (isNaN(id)) {
             return res.status(400).json({ message: 'Id invalido' });
+        }
+
+        if (req.file?.filename) {
+            fields.url_image = req.file.filename;
         }
 
         if (Object.keys(fields).length === 0) {
@@ -140,7 +157,7 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const result = await deleteProductModel(id)
+        const result = await deleteProductModel(id);
         if (result.affectedRows === 0) {
             return res.status(404).json({
                 message: `Producto con id: ${id} no encontrado`,

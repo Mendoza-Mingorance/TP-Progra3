@@ -9,15 +9,20 @@ import {
     getProductsInactive,
     updateProduct,
 } from '../controllers/products.controller.js';
+import { upload } from '../middlewares/uploadImg.js';
+import { auth } from '../middlewares/auth.js';
 
 const router = Router();
 
-router.route('/').get(getProducts).post(createProduct);
+router.get('/', getProducts);
+router.post('/', upload.single('image'), createProduct);
 
 router.get('/active', getProductsActive);
 router.get('/inactive', getProductsInactive);
 router.patch('/status/:id', changeProductsAvailable);
 
-router.route('/:id').get(getProductById).patch(updateProduct).delete(deleteProduct);
+router.get('/:id', getProductById);
+router.put('/:id', auth, upload.single('image'), updateProduct);
+router.delete('/:id', auth, deleteProduct);
 
 export default router;
