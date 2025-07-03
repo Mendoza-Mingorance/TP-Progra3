@@ -6,11 +6,11 @@ import { auth } from '../middlewares/auth.js'
 const router = Router()
 
 router.get('/', loginView)
-router.get('/dashboard', auth, dashboardView )
+router.get('/admin/dashboard', auth, dashboardView )
 
-router.get('/altas', auth, createProductView)
-router.get('/modificaciones', auth, updateProductView)
-router.get('/usuarios', auth, usersView)
+router.get('/admin/altas', auth, createProductView)
+router.get('/admin/modificaciones', auth, updateProductView)
+router.get('/admin/usuarios', auth, usersView)
 
 
 export default router

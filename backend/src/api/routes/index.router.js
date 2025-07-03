@@ -10,7 +10,7 @@ const router = Router()
 router.use('/api/products', productsRouter)
 router.use('/api/sales', salesRouter)
 router.use('/api/users', usersRouter)
-router.use('/admin', viewsRouter)
+router.use('/', viewsRouter)
 
 export default router
 
