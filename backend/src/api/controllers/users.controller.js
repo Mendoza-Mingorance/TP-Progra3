@@ -15,22 +15,14 @@ export const registerUser = async (req, res) =>{
     }
 }
 
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await getUserByEmailModel(email);
-    console.log(user);
     
-    if (!user) {
-      return res.status(401).json({ message: 'Credenciales incorrectas' });
-    }
-
-    const checkPassword = validatePassword(password, user.password);
-
-    if (!checkPassword) {
-      return res.status(401).json({ message: 'Credenciales incorrectas' });
+    if (!user || !validatePassword(password, user.password)) {
+      return res.status(401).redirect('/');
     }
 
     const token = generateToken(user);
