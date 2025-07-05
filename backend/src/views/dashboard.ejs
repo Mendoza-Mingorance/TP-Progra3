@@ -23,8 +23,8 @@
             </div>
           </div>
           <div class="actions">
-            <button class="activateBtn"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
-            <button class="editBtn"><img src="/assets/icons/edit.svg" alt="editar producto"></button>  
+            <button class="activateBtn" data-id="<%= product.id %>"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
+            <button class="editBtn" data-id="<%= product.id %>"><img src="/assets/icons/edit.svg" alt="editar producto"></button>  
             <button class="deleteBtn" data-id="<%= product.id %>"><img src="/assets/icons/trash-can.svg" alt="baja producto"></button>  
           </div>
         </li>
@@ -37,12 +37,13 @@
 
       <div id="deleteModal" class="modal hidden">
         <div class="modal-content">
-          <p>¿Estás seguro de que querés eliminar este producto?</p>
+          <p>¿Eliminar o desactivar el producto?</p>
           <form id="deleteForm" method="POST">
             <input type="hidden" name="id" id="deleteProductId">
             <div class="modal-buttons">
               <button type="button" id="cancelDelete">Cancelar</button>
-              <button type="submit">Eliminar</button>
+              <button type="submit">Desactivar producto</button>
+              <button type="button" id="confirmDelete">Eliminar producto</button>
             </div>
           </form>
         </div>

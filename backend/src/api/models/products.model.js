@@ -108,12 +108,9 @@ export const updateProductStatus = async (status, id) => {
     }
 };
 
-export const createProductModel = async productsValues => {
+export const createProductModel = async (productsValues) => {
     try {
-        const { name, price, description, url_image, id_category, available, stock } =
-            productsValues;
         const sql = 'INSERT INTO products SET ?';
-
         const [result] = await connection.query(sql, productsValues);
 
         return { id: result.insertId, ...productsValues };

@@ -1,4 +1,4 @@
-import { fetchProductByID, fetchProductsModel, updateProductModel } from "../models/products.model.js";
+import { deleteProductModel, fetchProductByID, fetchProductsModel, updateProductModel, updateProductStatus } from "../models/products.model.js";
 import { verifyToken } from "../utils/utils.js";
 
 export const loginView = (req, res) =>{
@@ -58,17 +58,34 @@ export const updateProductPost = async (req, res) => {
   }
 };
 
-export const deleteProductView = async (req, res) => {
-    const adminData = req.user
-    const { id } = req.body
+export const deactivateProductView = async (req, res) => {
+    const { id } = req.params
     try {
-        await updateProductModel(id, {available: "inactive"})
-        const productsData = await fetchProductsModel(req.query);
-        const products = productsData.data
-        
-        res.render('dashboard', {adminData, products})
+        await updateProductStatus('inactive', id)
+        res.status(200).json({ message: 'Producto desactivado' });
     } catch (error) {
-        console.error('Error al eliminar producto:', error.message);
+        console.error('Error al dar de baja producto:', error.message);
+        res.status(500).json({ message: "Internal server error. Couldn't deactivate product" });
+    }
+}
+
+export const activateProductView = async (req, res) => {
+    const { id } = req.params
+    try {
+        await updateProductStatus('active', id)
+        res.status(200).json({ message: 'Producto activado' });
+    } catch (error) {
+        console.error('Error al dar de alta producto:', error.message);
+        res.status(500).json({ message: "Internal server error. Couldn't activate product" });
+    }
+}
+export const deleteProductView = async (req, res) => {
+    const { id } = req.params
+    try {
+        await deleteProductModel(id)
+        res.status(200).json({ message: 'Producto eliminado' });
+    } catch (error) {
+        console.error('Error al eliminra producto:', error.message);
         res.status(500).json({ message: "Internal server error. Couldn't delete product" });
     }
 }
