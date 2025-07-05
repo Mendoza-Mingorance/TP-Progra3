@@ -1,5 +1,6 @@
 <%- include('partials/head') %>
     <link rel="stylesheet" href="/css/dashboard.css">
+    <script src="/js/dashboard.js" defer></script>
     <title>Listado de Productos</title>
   </head>
   <body>
@@ -24,7 +25,7 @@
           <div class="actions">
             <button class="activateBtn"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
             <button class="editBtn"><img src="/assets/icons/edit.svg" alt="editar producto"></button>  
-            <button class="deleteBtn"><img src="/assets/icons/trash-can.svg" alt="baja producto"></button>  
+            <button class="deleteBtn" data-id="<%= product.id %>"><img src="/assets/icons/trash-can.svg" alt="baja producto"></button>  
           </div>
         </li>
         <hr />
@@ -33,7 +34,19 @@
       <% } else { %>
       <p>No se encontraron productos.</p>
       <% } %>
-    </main>
 
+      <div id="deleteModal" class="modal hidden">
+        <div class="modal-content">
+          <p>¿Estás seguro de que querés eliminar este producto?</p>
+          <form id="deleteForm" method="POST">
+            <input type="hidden" name="id" id="deleteProductId">
+            <div class="modal-buttons">
+              <button type="button" id="cancelDelete">Cancelar</button>
+              <button type="submit">Eliminar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
     <%- include('partials/footer') %>
     

@@ -58,10 +58,19 @@ export const updateProductPost = async (req, res) => {
   }
 };
 
-
-
 export const deleteProductView = async (req, res) => {
-    res.render('deleteProduct')
+    const adminData = req.user
+    const { id } = req.body
+    try {
+        await updateProductModel(id, {available: "inactive"})
+        const productsData = await fetchProductsModel(req.query);
+        const products = productsData.data
+        
+        res.render('dashboard', {adminData, products})
+    } catch (error) {
+        console.error('Error al eliminar producto:', error.message);
+        res.status(500).json({ message: "Internal server error. Couldn't delete product" });
+    }
 }
 
 export const usersView = async (req, res) => {
