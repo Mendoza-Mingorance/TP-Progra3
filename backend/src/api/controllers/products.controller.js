@@ -111,7 +111,7 @@ export const createProduct = async (req, res) => {
             },
         });
     } catch (error) {
-        console.error('Error creando producto:', error );
+        console.error('Error creando producto:', error.message );
         res.status(500).json({ message: "Internal server error. Couldn't create product." });
     }
 };

@@ -10,13 +10,14 @@ import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const uploadPath = './src/uploads';
+const uploadPath = path.join(__dirname, 'src/uploads');
+
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'src', 'public')));
+app.use(express.static(path.join(__dirname, 'src/public')));
 app.use(cookieParser());
 app.use(cors());
 
@@ -26,7 +27,7 @@ if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath,{recursive:true});
 app.use('/uploads', express.static(uploadPath))
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'src', 'views'));
+app.set('views', path.join(__dirname, 'src/views'));
 
 await sqlConnection();
 await conectionInitialDatabase();

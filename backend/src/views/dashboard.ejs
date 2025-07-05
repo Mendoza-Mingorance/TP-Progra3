@@ -14,11 +14,16 @@
       <% if (products.length > 0) { %>
       <ul class="product-list">
         <% products.forEach(product => { %>
-        <li>
-          <div>
-            <p><strong><%= product.name %></strong></p>
-            <p>Precio: $<%= product.price %></p>
-            <p>Stock: <%= product.stock %> unidades</p>
+        <li class="product-element">
+          <div class="product-info">
+            <div class="product-image-container">
+              <img src="/uploads/<%= product.url_image %>" alt="<%= product.name %>">
+            </div>
+            <div>
+              <p><strong><%= product.name %></strong></p>
+              <p>Precio: $<%= product.price %></p>
+              <p>Stock: <%= product.stock %> unidades</p>
+            </div>
           </div>
           <div class="actions">
             <button class="activateBtn"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
