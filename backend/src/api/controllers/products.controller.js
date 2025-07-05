@@ -97,19 +97,7 @@ export const createProduct = async (req, res) => {
             stock
         );
 
-        res.status(200).json({
-            message: `Producto creado con éxito`,
-            payload: {
-                id: result.insertId,
-                name,
-                price,
-                description,
-                url_image,
-                id_category,
-                available,
-                stock,
-            },
-        });
+        res.status(200).redirect('/');
     } catch (error) {
         console.error('Error creando producto:', error.message );
         res.status(500).json({ message: "Internal server error. Couldn't create product." });

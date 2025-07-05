@@ -152,14 +152,15 @@ export const updateProductModel = async (id, fields) => {
 }
 
 export const deleteProductModel = async (id) =>{
-    try {
-        const sql = `DELETE FROM products WHERE id = ?`;
-        const [result] = await connection.query(sql, [id]);
-        return result
-    } catch (error) {
-        console.error('Error en modelo eliminando producto:', error.message);
-        throw new Error("Error eliminando producto en el modelo");
-    }
+   try {
+    const sql = `UPDATE products SET available = 'inactive' WHERE id = ?`;
+    const [result] = await connection.query(sql, [id]);
+
+    return result;
+  } catch (error) {
+    console.error('Error en modelo dando de baja producto:', error.message);
+    throw new Error('Error dando de baja producto en el modelo');
+  }
 }
 
 export const validationStock = async () => {
