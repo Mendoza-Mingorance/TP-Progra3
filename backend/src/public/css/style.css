@@ -1,22 +1,51 @@
 
-h1{
+:root {
+    --color-primary: #182032;
+    --hover-primary: #0d2873;
+    --color-secondary: #334661;
+    --succes-color: #11cb8d;
+    --error-color: #f43838;
+    --alert-color: #f4a214;
+
+    --bg-color: #fef0f0;
+    --bg-alter-color: #d1d1d1;
+    --card-color: #dcdcdc;
+    --text-color: #1d222c;
+    --text-muted: #37435f;
+    --border-color: #cddef5;
+    --shadow: 0 4px 12px rgba(30, 30, 30, 0.2);
+    --shadow-lg: 0 10px 20px rgba(30, 30, 30, 0.4);
+}
+[data-theme='dark'] {
+    --bg-color: #0f172a;
+    --bg-alter-color: #1e293b;
+    --card-color: #334155;
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: #475569;
+    --shadow: 0 4px 12px rgba(155, 155, 155, 0.2);
+    --shadow-lg: 0 10px 20px rgba(155, 155, 155, 0.4);
+}
+
+
+header h1{
     text-align: center;
 }
 
-nav {
+header nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 10px;
 }
 
-nav ul{
+header nav ul{
     list-style: none;
     display: flex;
     gap: 15px;
 }
 
-nav ul li a{
+header nav ul li a{
     text-decoration: none;
     color: black;
     cursor: pointer;
