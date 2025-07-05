@@ -92,7 +92,7 @@ export const fetchProductByID = async id => {
     try {
         const sql = `SELECT * FROM products WHERE id = ?`;
         const [rows] = await connection.query(sql, [id]);
-        return rows;
+        return rows[0] || null;
     } catch (error) {
         console.error('Error en modelo trayendo producto por id:', error.message);
         throw new Error('Error trayendo producto por id del modelo');

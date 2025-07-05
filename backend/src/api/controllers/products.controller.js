@@ -91,15 +91,7 @@ export const createProduct = async (req, res) => {
 
         res.status(200).json({
             message: `Producto creado con éxito`,
-            payload: {
-                name,
-                price,
-                description,
-                url_image,
-                id_category,
-                available,
-                stock,
-            },
+            payload: {id: result.id, ...newProduct},
         });
     } catch (error) {
         console.error('Error creando producto:', error);
