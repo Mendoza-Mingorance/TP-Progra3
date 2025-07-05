@@ -24,7 +24,7 @@ export const getProductsActive = async (req, res) => {
     try {
         await validationStock(); // -> revisar nombre de esta funcion
 
-        const [rows] = await fetchActiveProductsModel();
+        const rows = await fetchActiveProductsModel();
         res.status(200).json(rows);
     } catch (err) {
         console.error('Error trayendo productos activos:', err.message);
@@ -92,7 +92,6 @@ export const createProduct = async (req, res) => {
         res.status(200).json({
             message: `Producto creado con éxito`,
             payload: {
-                id: result.insertId,
                 name,
                 price,
                 description,
