@@ -15,7 +15,7 @@ export const getProducts = async (req, res) => {
         const products = await fetchProductsModel(req.query);
         res.status(200).json(products);
     } catch (error) {
-        console.error('Error trayendo productos:', err.message);
+        console.error('Error trayendo productos:', error.message);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
@@ -24,7 +24,7 @@ export const getProductsActive = async (req, res) => {
     try {
         await validationStock(); // -> revisar nombre de esta funcion
 
-        const [rows] = await fetchActiveProductsModel();
+        const rows = await fetchActiveProductsModel();
         res.status(200).json(rows);
     } catch (err) {
         console.error('Error trayendo productos activos:', err.message);
@@ -86,16 +86,8 @@ export const createProduct = async (req, res) => {
         if (!name || isNaN(price) || !description || isNaN(id_category) || isNaN(stock)) {
             return res.status(400).json({ message: 'Datos incompletos o incorrectos' });
         }
-
-        const result = await createProductModel(
-            name,
-            price,
-            description,
-            url_image,
-            id_category,
-            available,
-            stock
-        );
+        const newProduct = { name, price, description, url_image, id_category, available, stock };
+        await createProductModel(newProduct);
 
         res.status(200).redirect('/');
     } catch (error) {
@@ -113,7 +105,7 @@ export const updateProduct = async (req, res) => {
             return res.status(400).json({ message: 'Id invalido' });
         }
 
-         if (req.file?.filename) {
+        if (req.file?.filename) {
             fields.url_image = req.file.filename;
         }
 
