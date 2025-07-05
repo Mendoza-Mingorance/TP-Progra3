@@ -12,10 +12,10 @@ router.get('/admin/dashboard', auth, dashboardView )
 router.get('/admin/altas', auth, createProductView)
 router.get('/admin/modificaciones/', auth, updateProductView)
 router.post('/admin/modificaciones/update', auth, uploadFile.single('image'),updateProductPost);
+router.get('/admin/usuarios', auth, usersView)
 router.post('/admin/products/deactivate/:id', auth, deactivateProductView);
 router.post('/admin/products/delete/:id', auth, deleteProductView);
 router.post('/admin/products/activate/:id', auth, activateProductView);
-router.get('/admin/usuarios', auth, usersView)
 
 
 export default router

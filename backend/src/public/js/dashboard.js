@@ -11,6 +11,8 @@ const cancelActivate = document.getElementById('cancelActivate');
 const confirmActivate = document.getElementById('confirmActivate');
 const activateProductIdInput = document.getElementById('activateProductId');
 
+const editBtn = document.querySelectorAll('.editBtn');
+
 
 // Modal de eliminacion de productos
 
@@ -102,4 +104,12 @@ confirmActivate.addEventListener('click', async () => {
 });
 
 // -------------------------------- //
+
+
+editBtn.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const productId = btn.dataset.id;
+    window.location.href = `/admin/modificaciones/?id=${productId}`;
+  });
+});
 
