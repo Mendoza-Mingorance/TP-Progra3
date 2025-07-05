@@ -1,9 +1,8 @@
 import { connection } from '../database/db.js';
 
-export const fetchProductsModel = async queryParams => {
+export const fetchProductsModel = async (queryParams) => {
     try {
-        const { name, available, id_category, minPrice, maxPrice, sort, order, limit, offset } =
-            queryParams;
+        const { name, available, id_category, minPrice, maxPrice, sort, order, limit, offset } = queryParams;
 
         const sortValids = ['name', 'price', 'stock'];
         const orderValid = ['asc', 'desc'];

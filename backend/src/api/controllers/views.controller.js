@@ -1,4 +1,4 @@
-import { fetchProductsModel } from "../models/products.model.js";
+import { fetchProductByID, fetchProductsModel, updateProductModel } from "../models/products.model.js";
 import { verifyToken } from "../utils/utils.js";
 
 export const loginView = (req, res) =>{
@@ -24,9 +24,41 @@ export const createProductView = async (req, res) =>{
 }
 
 export const updateProductView = async (req, res) => {
-    const adminData = req.user
-    res.render('modificaciones', {adminData})
-}
+    const adminData = req.user;
+    const { id } = req.query;
+    
+    let product = null;
+    let error = false;
+
+    if (id) {
+        const result = await fetchProductByID(id);
+        
+        product = result[0] || null;
+        error = result.length === 0;
+    }
+
+    res.render('modificaciones', { adminData, product, error });
+};
+
+export const updateProductPost = async (req, res) => {
+  try {
+    const adminData = req.user;
+    const { id, ...fieldsToUpdate } = req.body;
+    
+    await updateProductModel(id, fieldsToUpdate);
+
+    const [product] = await fetchProductByID(id);
+    
+    const error = product.length === 0;
+
+    res.render('modificaciones', { adminData, product, error });
+  } catch (error) {
+    console.error('Error al actualizar producto:', error.message);
+    res.status(500).render('modificaciones', { adminData: req.user, error: true });
+  }
+};
+
+
 
 export const deleteProductView = async (req, res) => {
     res.render('deleteProduct')
