@@ -15,7 +15,7 @@ export default class Mail {
         const options = {
             from: config.mail_user,
             to: email,
-            subject: "MyM - New Admin Account",
+            subject: "MM - New Admin Account",
             html:`
             <h1>Hi ${name}!</h1>
             <br>
@@ -33,7 +33,7 @@ export default class Mail {
         const options = {
             from: config.mail_user,
             to: email,
-            subject: "MyM - Purchase Ticket",
+            subject: "MM - Purchase Ticket",
             html: `<h1>Your purchase has been successful!</h1>
                     <br>
                     <br>
