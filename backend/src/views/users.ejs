@@ -1,5 +1,6 @@
 <%- include('partials/head') %>
-    <script src="/js/users.js"></script>
+    <link rel="stylesheet" href="/css/users.css">
+    <script src="/js/users.js" defer></script>
     <title>Usuarios</title>
 </head>
 <body>
@@ -7,7 +8,7 @@
 
     <h1>Usuarios</h1>
 
-    <form action="/admin/users/create" method="POST">
+    <form id="adminUserForm">
         <div>
             <label for="email">Email:</label>
             <input type="email" name="email" id="email" required>
@@ -28,9 +29,25 @@
             <input type="password" name="password" id="password" required>
         </div>
 
-        <div>
-            <button type="submit">Crear Usuario Admin</button>
+        <div >
+            <button id="createUserBtn" type="submit">Crear Usuario Admin</button>
         </div>
     </form>
+
+    <div id="successModal" class="modal hidden">
+        <div class="modal-content">
+            <p>Usuario administrador creado exitosamente ✅</p>
+            <p>Mail de confirmación enviado al usuario.</p>
+            <button id="closeSuccessModal">Aceptar</button>
+        </div>
+    </div>
+
+    <div id="errorModal" class="modal hidden">
+        <div class="modal-content">
+            <p id="errorMessage">Ocurrió un error al crear el usuario ❌</p>
+            <button id="closeErrorModal">Cerrar</button>
+        </div>
+    </div>
+
 
     <%- include('partials/footer') %>

@@ -12,7 +12,10 @@ const config = {
         password: process.env.DB_PASSWORD,
         port: process.env.DB_PORT || 3306
     },
-    jwtSign: process.env.JWT_SIGN
+    jwtSign: process.env.JWT_SIGN,
+    mail_service: process.env.MAIL_SERVICE,
+    mail_user: process.env.MAIL_USER,
+    mail_pass: process.env.MAIL_PASS,
 }
 
 
