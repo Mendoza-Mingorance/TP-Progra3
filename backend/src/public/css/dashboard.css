@@ -1,59 +1,120 @@
-
 h1 {
     text-align: center;
 }
 
-.product-list{
-    list-style: none;
-    padding: 15px ;
-}
-
-.product-list li {
+.tabs-options {
     display: flex;
-    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
     align-items: center;
-
+    align-content: center;
+    flex-wrap: wrap;
 }
 
-.actions{
+.tabs-options button {
+    position: relative;
+    border: none;
+    background-color: rgba(var(--card-color), 0.7);
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 0.5rem 0.3rem;
+    color: var(--text-color);
+    box-shadow: var(--shadow);
+    transition: transform 0.5s, box-shadow 0.5s;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.tabs-options button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.tabs-options button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(85, 218, 87, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.tabs-options button:hover::before {
+    left: 100%;
+}
+
+.tab-btn.activeSection {
+    background-color: var(--bg-alter-color);
+}
+
+.tab-content {
+    display: none;
+}
+.tab-content.activeSection {
+    display: block;
+}
+
+.dashboard-list {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 1.5rem auto;
+    background-color: rgba(var(--card-color), 0.5);
+    box-shadow: var(--shadow);
+    transform-style: preserve-3d;
+    margin-top: 1rem;
+}
+.dashboard-list thead {
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+.dashboard-list th {
+    padding: 0.5rem;
+    font-weight: 600;
+    border: 1px solid var(--hover-primary);
+    background-color: var(--bg-alter-color);
+    transition: transform 0.4s ease;
+}
+.dashboard-list td {
+    padding: 0.7rem;
+    font-weight: 600;
+    border: 1px solid var(--hover-primary);
+    transition: transform 0.4s ease;
+}
+
+.dashboard-actions-btns {
+    background: none;
+    border: none;
     display: flex;
-    gap: 10px;
+    cursor: pointer;
+    gap: 0.3rem;
 }
 
-.actions button{
+.dashboard-actions-btns button {
     border: none;
     background-color: transparent;
     cursor: pointer;
     object-fit: contain;
+    width: 2rem;
 }
 
-.deleteBtn{
-    width: 25px;
+.dashboard-actions-btns button:hover {
+    transform: translateY(-3px);
 }
 
-.editBtn{
-    width: 28px;
-}
-
-.activateBtn{
-    width: 25px;
-}
-
-.product-image-container{
+.product-image-container {
     width: 100px;
     height: 100px;
 }
 
-.product-image-container img{
+.product-image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.product-element{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .product-info {
@@ -64,32 +125,87 @@ h1 {
 
 /* Modal */
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(var(--card-color), 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
 .modal-content {
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  text-align: center;
+    background-color: var(--bg-color);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
 }
 
 .modal-buttons {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 1rem;
-  gap: 20px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    gap: 20px;
+}
+
+.modal-buttons button {
+    position: relative;
+    border: none;
+    background-color: rgba(var(--card-color), 0.7);
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 0.5rem 0.3rem;
+    color: var(--text-color);
+    box-shadow: var(--shadow);
+    transition: transform 0.5s, box-shadow 0.5s;
+    cursor: pointer;
+    overflow: hidden;
+}
+.modal-buttons button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
 }
 
 .hidden {
-  display: none;
+    display: none;
+}
+
+#cancelActivate::before,
+#cancelDelete::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(218, 85, 85, 0.76), transparent);
+    transition: left 0.5s;
+}
+
+#cancelActivate:hover::before,
+#cancelDelete:hover::before {
+    left: 100%;
+}
+
+#confirmActivate::before,
+#confirmDelete::before,
+.modal-buttons button[type='submit']::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(33, 239, 40, 0.5), transparent);
+    transition: left 0.5s;
+}
+
+#confirmActivate:hover::before,
+#confirmDelete:hover::before,
+.modal-buttons button[type='submit']:hover::before {
+    left: 100%;
 }
