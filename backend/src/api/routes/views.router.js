@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { activateProductView, createProductView, dashboardView, deactivateProductView, deleteProductView, loginView, updateProductPost, updateProductView, usersView } from '../controllers/views.controller.js'
+import { activateProductView, createProductView, dashboardView, deactivateProductView, deleteProductView, loginView, registerAdminUser, updateProductPost, updateProductView, usersView } from '../controllers/views.controller.js'
 import { auth } from '../middlewares/auth.js'
 import { uploadFile } from '../middlewares/uploadImg.js'
 
@@ -13,6 +13,7 @@ router.get('/admin/altas', auth, createProductView)
 router.get('/admin/modificaciones/', auth, updateProductView)
 router.post('/admin/modificaciones/update', auth, uploadFile.single('image'),updateProductPost);
 router.get('/admin/usuarios', auth, usersView)
+router.post('/admin/users/create', auth, registerAdminUser)
 router.post('/admin/products/deactivate/:id', auth, deactivateProductView);
 router.post('/admin/products/delete/:id', auth, deleteProductView);
 router.post('/admin/products/activate/:id', auth, activateProductView);

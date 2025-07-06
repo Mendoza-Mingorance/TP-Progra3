@@ -1,7 +1,36 @@
 <%- include('partials/head') %>
+    <script src="/js/users.js"></script>
     <title>Usuarios</title>
 </head>
 <body>
     <%- include('partials/header') %>
+
     <h1>Usuarios</h1>
-<%- include('partials/footer') %>
+
+    <form action="/admin/users/create" method="POST">
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+
+        <div>
+            <label for="name">Nombre:</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+
+        <div>
+            <label for="surname">Apellido:</label>
+            <input type="text" name="surname" id="surname" required>
+        </div>
+
+        <div>
+            <label for="password">Contraseña:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+
+        <div>
+            <button type="submit">Crear Usuario Admin</button>
+        </div>
+    </form>
+
+    <%- include('partials/footer') %>

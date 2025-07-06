@@ -1,10 +1,10 @@
 import { connection } from "../database/db.js";
 
 
-export const registerUserModel = async (email, password) => {
+export const registerUserModel = async (email, name, surname, role, password) => {
     try {
-        const values = [email, password];
-        const sql = "INSERT INTO users (email, password) VALUES (?, ?)";
+        const values = [email, name, surname, role, password];
+        const sql = "INSERT INTO users (email, name, surname, role, password) VALUES (?, ?, ?, ?, ?)";
         await connection.query(sql, values);
         return true;
     } catch (error) {

@@ -1,5 +1,6 @@
 import { deleteProductModel, fetchProductByID, fetchProductsModel, updateProductModel, updateProductStatus } from "../models/products.model.js";
-import { verifyToken } from "../utils/utils.js";
+import { getUserByEmailModel, registerUserModel } from "../models/users.model.js";
+import { createHash, verifyToken } from "../utils/utils.js";
 
 export const loginView = (req, res) =>{
     const token = verifyToken(req.cookies.jwt)  
@@ -93,4 +94,27 @@ export const deleteProductView = async (req, res) => {
 export const usersView = async (req, res) => {
     const adminData = req.user
     res.render('users', {adminData})
+}
+
+export const registerAdminUser = async (req, res) =>{
+    try {
+        const {email, name, surname, role='admin', password} = req.body
+
+        if (!email || !password || !name || !surname) {
+            return res.status(400).json({ message: "Faltan campos obligatorios" });
+        }
+
+        const user = await getUserByEmailModel(email)
+        if (user) {
+            return res.status(400).json({ message: "El email ya está registrado" });
+        }
+        
+        const hashedPassword = createHash(password)
+        await registerUserModel(email, name, surname, role, hashedPassword)
+
+        res.status(200).json({message: `Usuario ${email} registrado`})
+    } catch (error) {
+        console.error("Error en controlador registrando usuario:",error.message);  
+        res.status(500).json({message: "Internal server error. Couldn't register user"})
+    }
 }
