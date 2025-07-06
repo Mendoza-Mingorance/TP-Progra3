@@ -8,7 +8,6 @@ const router = Router()
 
 router.get('/', loginView)
 router.get('/admin/dashboard', auth, dashboardView )
-
 router.get('/admin/altas', auth, createProductView)
 router.get('/admin/modificaciones/', auth, updateProductView)
 router.post('/admin/modificaciones/update', auth, uploadFile.single('image'),updateProductPost);
