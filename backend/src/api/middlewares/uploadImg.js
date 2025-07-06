@@ -1,9 +1,10 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'src/uploads/');
+        cb(null, 'src/public/uploads/');
     },
     filename: (req, file, cb) => {
         const nameImgFile = Date.now() + path.extname(file.originalname);
@@ -28,3 +29,14 @@ export const uploadFile = multer({
     fileFormat,
     limits: { fileSize: 5 * 1024 * 1024 },
 });
+
+export const checkUploadDir =(dirPath) => {
+    return (req, res, next) => {
+        if (!fs.existsSync(dirPath)) {
+            fs.mkdirSync(dirPath, { recursive: true });
+            console.log(`Carpeta creada: ${dirPath}`);
+        }
+        next();
+    };
+}
+
