@@ -1,3 +1,4 @@
+import Mail from "../config/mail.config.js";
 import { deleteProductModel, fetchProductByID, fetchProductsModel, updateProductModel, updateProductStatus } from "../models/products.model.js";
 import { getUserByEmailModel, registerUserModel } from "../models/users.model.js";
 import { createHash, verifyToken } from "../utils/utils.js";
@@ -112,6 +113,9 @@ export const registerAdminUser = async (req, res) =>{
         const hashedPassword = createHash(password)
         await registerUserModel(email, name, surname, role, hashedPassword)
 
+        const mailer = new Mail()
+        await mailer.sendAdminMail(email, name)
+        
         res.status(200).json({message: `Usuario ${email} registrado`})
     } catch (error) {
         console.error("Error en controlador registrando usuario:",error.message);  
