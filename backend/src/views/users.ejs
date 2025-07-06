@@ -36,10 +36,18 @@
 
     <div id="successModal" class="modal hidden">
         <div class="modal-content">
-            <p>✅ Usuario administrador creado exitosamente.</p>
+            <p>Usuario administrador creado exitosamente ✅</p>
             <p>Mail de confirmación enviado al usuario.</p>
             <button id="closeSuccessModal">Aceptar</button>
         </div>
     </div>
+
+    <div id="errorModal" class="modal hidden">
+        <div class="modal-content">
+            <p id="errorMessage">Ocurrió un error al crear el usuario ❌</p>
+            <button id="closeErrorModal">Cerrar</button>
+        </div>
+    </div>
+
 
     <%- include('partials/footer') %>

@@ -4,6 +4,10 @@ const form = document.getElementById('adminUserForm');
 const successModal = document.getElementById('successModal');
 const closeSuccessModal = document.getElementById('closeSuccessModal');
 
+const errorModal = document.getElementById('errorModal');
+const closeErrorModal = document.getElementById('closeErrorModal');
+const errorMessage = document.getElementById('errorMessage');
+
 form.addEventListener('submit', async (e) => {
 e.preventDefault();
 
@@ -39,5 +43,9 @@ e.preventDefault();
 
 closeSuccessModal.addEventListener('click', () => {
 successModal.classList.add('hidden');
+});
+
+closeErrorModal.addEventListener('click', () => {
+    errorModal.classList.add('hidden');
 });
 
