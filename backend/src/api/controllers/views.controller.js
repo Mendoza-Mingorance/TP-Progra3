@@ -46,6 +46,10 @@ export const updateProductPost = async (req, res) => {
   try {
     const adminData = req.user;
     const { id, ...fieldsToUpdate } = req.body;
+
+    if (req.file) {
+      fieldsToUpdate.url_image = req.file.filename;
+    }
     
     await updateProductModel(id, fieldsToUpdate);
 
