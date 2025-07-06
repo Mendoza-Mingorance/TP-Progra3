@@ -1,9 +1,8 @@
-import { conectionInitialDatabase, connection } from '../database/db.js';
+import { connection } from '../database/db.js';
 
-export const fetchProductsModel = async queryParams => {
+export const fetchProductsModel = async (queryParams) => {
     try {
-        const { name, available, id_category, minPrice, maxPrice, sort, order, limit, offset } =
-            queryParams;
+        const { name, available, id_category, minPrice, maxPrice, sort, order, limit, offset } = queryParams;
 
         const sortValids = ['name', 'price', 'stock'];
         const orderValid = ['asc', 'desc'];
@@ -92,7 +91,7 @@ export const fetchProductByID = async id => {
     try {
         const sql = `SELECT * FROM products WHERE id = ?`;
         const [rows] = await connection.query(sql, [id]);
-        return rows[0] || null;
+        return rows;
     } catch (error) {
         console.error('Error en modelo trayendo producto por id:', error.message);
         throw new Error('Error trayendo producto por id del modelo');
@@ -109,12 +108,9 @@ export const updateProductStatus = async (status, id) => {
     }
 };
 
-export const createProductModel = async productsValues => {
+export const createProductModel = async (productsValues) => {
     try {
-        const { name, price, description, url_image, id_category, available, stock } =
-            productsValues;
         const sql = 'INSERT INTO products SET ?';
-
         const [result] = await connection.query(sql, productsValues);
 
         return { id: result.insertId, ...productsValues };
@@ -125,9 +121,7 @@ export const createProductModel = async productsValues => {
 };
 
 export const updateProductModel = async (id, fields) => {
-    const conn = await connection.getConnection();
     try {
-        await conn.beginTransaction();
         const columns = [];
         const values = [];
 
@@ -140,27 +134,24 @@ export const updateProductModel = async (id, fields) => {
 
         const sql = `UPDATE products SET ${columns.join(', ')} WHERE id = ?`;
         const [result] = await connection.query(sql, values);
-        await conn.commit();
         return result;
     } catch (error) {
-        if (conn) await conn.rollback();
         console.error('Error en modelo actualizando producto:', error.message);
         throw new Error('Error actualizando producto en el modelo');
-    } finally {
-        conn.release();
-    }
+    } 
 };
 
-export const deleteProductModel = async id => {
-    try {
-        const sql = `DELETE FROM products WHERE id = ?`;
-        const [result] = await connection.query(sql, [id]);
-        return result;
-    } catch (error) {
-        console.error('Error en modelo eliminando producto:', error.message);
-        throw new Error('Error eliminando producto en el modelo');
-    }
-};
+export const deleteProductModel = async (id) =>{
+   try {
+    const sql = `DELETE FROM products WHERE id = ?`;
+    const [result] = await connection.query(sql, [id]);
+
+    return result;
+  } catch (error) {
+    console.error('Error en modelo eliminando producto:', error.message);
+    throw new Error('Error eliminando producto en el modelo');
+  }
+}
 
 export const validationStock = async () => {
     try {

@@ -1,13 +1,48 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Modificaciones</title>
-    <script src="/js/script.js" defer></script>
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/css/modificaciones.css">
+<title>Modificar producto</title>
 </head>
 <body>
-    <%- include('partials/header') %>
-    <h1>Modificaciones</h1>
-</body>
-</html>
+<%- include('partials/header') %>
+  <div class="form-container">
+    <h1>Modificar producto</h1>
+
+    <form action="/admin/modificaciones" method="GET">
+      <label for="id">Buscar producto por ID:</label>
+      <input type="number" id="id" name="id" required>
+      <button type="submit">Buscar</button>
+    </form>
+
+    <% if (error) { %>
+      <p style="color:red;">No se encontró un producto con ese ID.</p>
+    <% } %>
+
+    <% if (product) { %>
+      <form action="/admin/modificaciones/update" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<%= product.id %>">
+
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" value="<%= product.name %>" required>
+
+        <label for="price">Precio:</label>
+        <input type="number" id="price" name="price" value="<%= product.price %>" required>
+
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" value="<%= product.stock %>" required>
+
+        <label for="description">Descripción:</label>
+        <textarea id="description" name="description" rows="4" required><%= product.description %></textarea>
+
+        <label for="url_image">Imagen actual:</label>
+        <div class="product-image-container">
+          <img src="/uploads/<%= product.url_image %>" alt="Imagen del producto" width="150">
+        </div>
+
+        <label for="url_image">Cambiar imagen:</label>
+        <input type="file" id="url_image" name="url_image" accept="image/*">
+
+        <button type="submit">Guardar cambios</button>
+      </form>
+    <% } %>
+  </div>
+<%- include('partials/footer') %>

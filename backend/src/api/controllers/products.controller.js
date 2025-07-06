@@ -87,14 +87,11 @@ export const createProduct = async (req, res) => {
             return res.status(400).json({ message: 'Datos incompletos o incorrectos' });
         }
         const newProduct = { name, price, description, url_image, id_category, available, stock };
-        const result = await createProductModel(newProduct);
+        await createProductModel(newProduct);
 
-        res.status(200).json({
-            message: `Producto creado con éxito`,
-            payload: {id: result.id, ...newProduct},
-        });
+        res.status(200).redirect('/');
     } catch (error) {
-        console.error('Error creando producto:', error);
+        console.error('Error creando producto:', error.message );
         res.status(500).json({ message: "Internal server error. Couldn't create product." });
     }
 };

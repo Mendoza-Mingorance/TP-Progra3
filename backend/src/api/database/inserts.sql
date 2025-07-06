@@ -15,5 +15,5 @@ INSERT INTO products (name, url_image, description, price,id_category,stock) VAL
 ('Intel Core i7-14700K', 'https://c1.neweggimages.com/productimage/nb640/19-118-466-04.jpg', 'Procesador de escritorio de 20 núcleos (8 P-cores + 12 E-cores) con hasta 5.6 GHz, 33MB de caché, gráficos Intel UHD Graphics 770 integrados y soporte para DDR4/DDR5.', 380.00, 3, 45);
 
 -- Usuario admin por defecto (contraseña: admin123) Encriptado con https://bcrypt-generator.com/ con saltos de 10
-INSERT IGNORE INTO users (email, password, role) VALUES
-('admin@admin.com', '$2a$10$05npD/sm4JsoGmLR5B7JceQyZMj..zgiXR9sAI/iGMJLNwW56P4Xa', 'admin');
+INSERT IGNORE INTO users (email, password, role, name, surname) VALUES
+('admin@admin.com', '$2a$10$05npD/sm4JsoGmLR5B7JceQyZMj..zgiXR9sAI/iGMJLNwW56P4Xa', 'admin', 'Admin', 'Prueba');

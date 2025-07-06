@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/css/style.css">
+<%- include('partials/head') %>
     <link rel="stylesheet" href="/css/dashboard.css">
+    <script src="/js/dashboard.js" defer></script>
     <title>Listado de Productos</title>
-    <script src="/js/script.js" defer></script>
   </head>
   <body>
     <%- include('partials/header') %>
@@ -14,16 +10,22 @@
       <% if (products.length > 0) { %>
       <ul class="product-list">
         <% products.forEach(product => { %>
-        <li>
-          <div>
-            <p><strong><%= product.name %></strong></p>
-            <p>Precio: $<%= product.price %></p>
-            <p>Stock: <%= product.stock %> unidades</p>
+        <li class="product-element">
+          <div class="product-info">
+            <div class="product-image-container">
+              <img src="/uploads/<%= product.url_image %>" alt="<%= product.name %>">
+            </div>
+            <div>
+              <p><strong><%= product.name %></strong></p>
+              <p>Precio: $<%= product.price %></p>
+              <p>Stock: <%= product.stock %> unidades</p>
+              <p>Disponible: <%= product.available %></p>
+            </div>
           </div>
           <div class="actions">
-            <button class="activateBtn"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
-            <button class="editBtn"><img src="/assets/icons/edit.svg" alt="editar producto"></button>  
-            <button class="deleteBtn"><img src="/assets/icons/trash-can.svg" alt="baja producto"></button>  
+            <button class="activateBtn" data-id="<%= product.id %>"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
+            <button class="editBtn" data-id="<%= product.id %>"><img src="/assets/icons/edit.svg" alt="editar producto"></button>  
+            <button class="deleteBtn" data-id="<%= product.id %>"><img src="/assets/icons/trash-can.svg" alt="baja producto"></button>  
           </div>
         </li>
         <hr />
@@ -32,9 +34,32 @@
       <% } else { %>
       <p>No se encontraron productos.</p>
       <% } %>
-    </main>
 
+      <div id="deleteModal" class="modal hidden">
+        <div class="modal-content">
+          <p>¿Eliminar o desactivar el producto?</p>
+          <form id="deleteForm" method="POST">
+            <input type="hidden" name="id" id="deleteProductId">
+            <div class="modal-buttons">
+              <button type="button" id="cancelDelete">Cancelar</button>
+              <button type="submit">Desactivar producto</button>
+              <button type="button" id="confirmDelete">Eliminar producto</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="activateModal" class="modal hidden">
+        <div class="modal-content">
+          <p>¿Activar este producto?</p>
+          <input type="hidden" id="activateProductId">
+          <div class="modal-buttons">
+            <button type="button" id="cancelActivate">Cancelar</button>
+            <button type="button" id="confirmActivate">Activar producto</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
     <%- include('partials/footer') %>
     
-  </body>
-</html>
