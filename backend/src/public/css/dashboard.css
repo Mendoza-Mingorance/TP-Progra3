@@ -209,3 +209,9 @@ h1 {
 .modal-buttons button[type='submit']:hover::before {
     left: 100%;
 }
+
+.dashboard-list th,
+.dashboard-list td {
+  text-align: center;
+  vertical-align: middle;
+}
