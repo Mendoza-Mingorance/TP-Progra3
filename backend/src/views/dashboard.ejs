@@ -31,7 +31,7 @@
               <% products.forEach(product => { %>
                 <tr class="dashboard-product-item">
                   <td><%= product.id%></td>
-                  <td class="product-image-container"><img src="<%= product.url_image %>" alt="<%= product.name %>"></td>
+                  <td class="product-image-container"><img src="/uploads/<%= product.url_image %>" alt="<%= product.name %>"></td>
                   <td><%= product.name%></td>
                   <td>$<%= product.price %></td>
                   <td><%= product.stock %></td>

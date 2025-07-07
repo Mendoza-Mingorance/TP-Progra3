@@ -100,13 +100,16 @@ export const createSale = async (req, res) => {
                 return res.status(400).json({ message: `Stock insuficiente para ${product.name}, id: ${p.id}` });
         }
 
-        const total = products.reduce((acc, p) => acc + p.amount_unit * p.quantity, 0);
+        const total = products.reduce((acc, p) => acc + p.price * p.quantity, 0);
 
         const { saleId, resultUpdate } = await createSaleModel(name, total, payment_method, products);
+
+        const ticket = `ABC-1000-${saleId}`;
 
         res.status(200).json({
             message: `Venta completada exitosamente por ${name}`,
             id: saleId,
+            ticket,
             payload: resultUpdate,
         });
     } catch (error) {

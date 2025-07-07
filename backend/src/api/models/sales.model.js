@@ -81,7 +81,7 @@ export const createSaleModel = async (name, total, payment_method, products) => 
         for (const p of products) {
             await conn.query(
                 `INSERT INTO products_sales (id_products, id_sales, quantity, amount_unit) VALUES (?, ?, ?, ?)`,
-                [p.id, saleId, p.quantity, p.amount_unit]
+                [p.id, saleId, p.quantity, p.price]
             );
 
             const [result] = await conn.query(
