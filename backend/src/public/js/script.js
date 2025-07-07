@@ -9,13 +9,11 @@ const quickLogin = async () => {
   document.getElementById("password").value = "admin123"
 }
 
- window.addEventListener('DOMContentLoaded', () => {
-    const links = document.querySelectorAll('header nav ul li a');
-    const path = window.location.pathname;
+const links = document.querySelectorAll('header nav ul li a');
+const path = window.location.pathname;
 
-    links.forEach(link => {
-      if (link.getAttribute('href') === path) {
-        link.classList.add('active');
-      }
-    });
-  });
+links.forEach(link => {
+  if (link.getAttribute('href') === path) {
+    link.classList.add('active');
+  }
+});

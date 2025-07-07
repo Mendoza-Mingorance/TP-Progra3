@@ -132,12 +132,11 @@
             </table>     
         </section>     
       <% } %>
-
       <% if (salesData && salesData.length > 0) { %>
-        <section id="sales-section" class="tab-content">
-          <table class="dashboard-list">
-            <thead>
-              <tr>
+          <section id="sales-section" class="tab-content">
+            <table class="dashboard-list">
+              <thead>
+                <tr>
                   <th>ID Venta</th>
                   <th>Usuario</th>
                   <th>Fecha</th>
@@ -145,18 +144,18 @@
                 </tr>
               </thead>
               <tbody>
-              <% salesData.forEach(sale => { %>
+                <% salesData.forEach(sale => { %>
                   <tr>
                     <td><%= sale.id %></td>
-                    <td><%= sale.user_name %></td>
-                    <td><%= new Date(sale.date).toLocaleDateString() %></td>
-                    <td>$<%= sale.total %></td>
+                    <td><%= sale.name_client %></td>
+                    <td><%= new Date(sale.createdAt).toLocaleDateString() %></td>
+                    <td>$<%= sale.amount_total %></td>
                   </tr>
-              <% }) %>
+                <% }) %>
               </tbody>
             </table>
           </section>
-        <% } else { %>  
+      <% } else { %>  
           <section id="sales-section" class="tab-content"> 
             <table class="dashboard-list">
             <thead>
