@@ -134,6 +134,7 @@ h1 {
     gap: 20px;
 }
 
+#sales-download,
 .modal-buttons button,
 .pagination-btn,
 .btn-filter,
@@ -177,6 +178,7 @@ h1 {
     left: 100%;
 }
 
+#sales-download::before,
 #confirmActivate::before,
 #confirmDelete::before,
 .pagination-btn::before,
@@ -193,6 +195,7 @@ h1 {
     transition: left 0.5s;
 }
 
+#sales-download:hover::before,
 #confirmActivate:hover::before,
 #confirmDelete:hover::before,
 .btn-filter:hover::before,

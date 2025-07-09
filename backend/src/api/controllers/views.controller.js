@@ -35,8 +35,6 @@ export const dashboardView = async (req, res) => {
             offset,
         };
 
-        console.log('Querys activas: ', queryParams);
-
         const productsData = await fetchProductsModel(queryParams);
         const usersData = await fetchUsersModel();
         const categoriesData = await fetchCategoriesModel();

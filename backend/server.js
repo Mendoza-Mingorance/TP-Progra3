@@ -2,7 +2,7 @@ import express from 'express';
 import config from './src/api/config/config.js';
 import cors from 'cors';
 import indexRouter from './src/api/routes/index.router.js';
-import { conectionInitialDatabase, sqlConnection } from './src/api/database/db.js';
+import {  sqlConnection } from './src/api/database/db.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -28,7 +28,6 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
 await sqlConnection();
-await conectionInitialDatabase();
 app.listen(config.port, () => {
     console.log(`Server running in ${config.port}`);
 });

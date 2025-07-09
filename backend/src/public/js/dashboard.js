@@ -18,6 +18,8 @@ const activateProductIdInput = document.getElementById('activateProductId');
 
 const editBtn = document.querySelectorAll('.editBtn');
 
+const salesDownload = document.getElementById('sales-download');
+
 const tabBtn = document.querySelectorAll('.tab-btn');
 const sectionsTabs = document.querySelectorAll('.tab-content');
 
@@ -208,13 +210,30 @@ paginationBtn.forEach(btn => {
 searchBar.addEventListener('submit', () => {
     let valueInput = searchBar.value.toLowerCase().trim();
     console.log(valueInput);
-    
+
     let currentParams = getQueryPath();
     console.log(currentParams);
-    
+
     updateQueryPath({
         ...currentParams,
         name: valueInput,
-        
     });
+});
+
+salesDownload.addEventListener('click', async () => {
+    try {
+        const res = await fetch(`http://localhost:8080/api/sales/export`);
+        if (!res.ok) throw new Error('Error al descargar el archivo');
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'ventas.xlsx';
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url)
+    } catch (error) {
+        console.error('Error al enviar solicitud de descarga de ventas', error);
+    }
 });

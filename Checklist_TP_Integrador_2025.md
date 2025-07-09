@@ -18,7 +18,7 @@
 ### 👨‍💼 Panel de administración (vistas HTML - EJS)
 
 - [X] Pantalla login
-- [ ] Dashboard: lista de productos activos/inactivos por categoría
+- [X] Dashboard: lista de productos activos/inactivos por categoría
 - [X] Alta producto: con imagen
 - [X] Editar producto: con nueva imagen
 - [X] Eliminar producto (baja lógica)
@@ -30,10 +30,10 @@
 
 - [X] Rutas RESTful (MVC)
 - [X] CRUD productos
-- [ ] Carga de imágenes
+- [X] Carga de imágenes
 - [ ] Crear y listar ventas con productos (M:N)
 - [X] Crear usuarios admin
-- [ ] Validaciones con middleware
+- [X] Validaciones con middleware
 - [X] Paginación de productos
 - [ ] Listar encuestas (extra)
 - [ ] Descargar encuestas (extra)
