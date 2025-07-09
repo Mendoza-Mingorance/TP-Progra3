@@ -1,12 +1,13 @@
 <%- include('partials/head') %>
-  <title>Alta de Productos</title>
+<link rel="stylesheet" href="/css/altas.css">  
+<title>Alta de Productos</title>
 </head>
 <body class="container">
-  <main>
-
+  
   
   <%- include('partials/header') %>
-
+  <main>
+<div class="create-container">
   <h1>Alta de Productos</h1>
 
   <form action="../api/products" method="POST" enctype="multipart/form-data">
@@ -35,15 +36,16 @@
       <input type="number" id="stock" name="stock" min="0" required>
     </div>
 
-    <div>
+    <div class="update-img-form">
       <label for="image">Imagen:</label>
       <input type="file" id="image" name="image" accept="image/*">
     </div>
 
-    <div>
+    <div >
       <button type="submit">Crear producto</button>
     </div>
   </form>
+  </div>
   </main>
 
   <%- include('partials/footer') %>

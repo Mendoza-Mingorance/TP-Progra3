@@ -9,6 +9,7 @@
   <%- include('partials/header') %>
 
   <main class="main-content">
+    <div class="user-container">
     <h1 class="title">Usuarios</h1>
 
     <form id="adminUserForm" class="form-card">
@@ -22,9 +23,6 @@
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required>
                 </div>
-            </div>
-            
-            <div>
                 <div class="form-group">
                     <label for="surname">Apellido:</label>
                     <input type="text" name="surname" id="surname" required>
@@ -34,13 +32,13 @@
                     <input type="password" name="password" id="password" required>
                 </div>
             </div>
-        </div>
-        <div class="form-group form-role">
-            <label for="role">Rol:</label>
-            <select name="role" id="role" required>
-                <option value="admin">Admin</option>
-                <option value="manager">Manager</option>
-            </select>
+            <div class="form-group form-role">
+                <label for="role">Rol:</label>
+                <select name="role" id="role" required>
+                    <option value="admin">Admin</option>
+                    <option value="manager">Manager</option>
+                </select>
+            </div>
         </div>
 
         <div class="form-group text-center">
@@ -64,6 +62,7 @@
         <p id="errorMessage" class="modal-text error">Ocurrió un error al crear el usuario ❌</p>
         <button id="closeErrorModal" class="btn-error">Cerrar</button>
       </div>
+    </div>
     </div>
   </main>
 

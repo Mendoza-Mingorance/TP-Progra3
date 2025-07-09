@@ -1,18 +1,24 @@
 <header>
     <nav>
         <div class="logo-container">
-            <img class="logo" src="/assets/logo-min.png" alt="">
+            <img class="logo" src="/assets/logo-min.png" alt="" />
         </div>
         <ul>
             <li><a href="/admin/dashboard">Dashboard</a></li>
-            <li><a href="/admin/altas">New Product</a></li>
-            <li><a href="/admin/modificaciones">Update Product</a></li>
+            <li><a href="/admin/altas">Crear Producto</a></li>
+            <li><a href="/admin/modificaciones">Actualizar</a></li>
             <% if (adminData.role === 'admin') { %>
-            <li><a href="/admin/usuarios">Users</a></li>
+            <li><a href="/admin/usuarios">Usuarios</a></li>
             <% } %>
         </ul>
         <div class="admin-data">
-            <p>Hola <%= adminData.name %>!<small><i> (<%= adminData.role %>)</i></small></p>
+            <p>
+                Hola <%= adminData.name %>!<small><i> (<%= adminData.role %>)</i></small>
+            </p>
+            <span class="switch">
+                <input type="checkbox" id="theme_dark" />
+                <span class="turn-on-off"><i class="icon" id="theme_icon">🌙</i></span>
+            </span>
             <button class="logoutBtn" onclick="logout()">Logout</button>
         </div>
     </nav>

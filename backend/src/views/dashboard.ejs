@@ -6,9 +6,10 @@
   <body class="container">
     <%- include('partials/header') %>
     <main>
+      <div class="dashboard-container">
       <h1>Panel de Control</h1>
       <div class="tabs-options">
-        <button class="tab-btn active" data-target="products-section">Productos</button>
+        <button class="tab-btn activeSection" data-target="products-section">Productos</button>
         <button class="tab-btn" data-target="users-section">Usuarios</button>
         <button class="tab-btn" data-target="categories-section">Categorías</button>
         <button class="tab-btn" data-target="sales-section">Ventas</button>
@@ -16,13 +17,34 @@
 
       <% if (products.length > 0) { %>
         <section id="products-section" class="tab-content activeSection">
-            <label>Buscador
-              <input type="text" class="search-bar" name="name" placeholder="Buscar por nombre" value="<%= query.name||''%>">          
-            </label>
-            <form method="GET" action="/admin/dashboard" class="products-section-filters">
-              <button type="submit">Filtrar</button>
-            </form>
-            <div>
+            <div class="products-filters">            
+              <h2>
+                Filtros           
+              </h2>
+              <form method="GET" action="/admin/dashboard" class="products-form-filters"> 
+                <div class="products-filters-inputs">
+                  <div>
+                    <label >Buscador</label>
+                    <input type="text" class="search-bar" name="name" placeholder="Buscar por nombre" value="<%= query.name||''%>">       
+                  </div>
+                  <div>
+                    <label >Categorias</label>
+                      <select name="id_category">                      
+                        <option value="">Todos</option>
+                        <% categoriesData.forEach(c => { %>                    
+                          <option value="<%= c.id %>" <%= query.id_category === c.id ? 'selected' : '' %> >
+                            <%= c.name %>
+                          </option>                    
+                        <% }) %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="products-filters-bts">
+                    <a href="/admin/dashboard" class="reset-filters-btn">Limpiar</a>                
+                    <button class="btn-filter" type="submit">Filtrar</button>
+                  </div>
+              </form>
+            </div>       
 
             <table class="dashboard-list">
               <thead>
@@ -70,18 +92,59 @@
                       <button href="#" class="pagination-btn" data-page="<%= currentPage + 1 %>">Siguiente</button>
                     <% } %>
                   </div>
-                <% } %>
-              
-            </div>
+                <% } %>     
         </section>    
       <% } else { %>
         <section id="products-section" class="tab-content activeSection">
-          <p>No se encontraron productos.</p>
+          <div class="products-filters">            
+            <h3>
+              Filtros           
+            </h3>
+            <form method="GET" action="/admin/dashboard" class="products-form-filters"> 
+              <div class="products-filters-inputs">
+                <div>
+                  <label >Buscador</label>
+                  <input type="text" class="search-bar" name="name" placeholder="Buscar por nombre" value="<%= query.name||''%>">       
+                </div>
+                <div>
+                  <label >Categorias</label>
+                    <select name="id_category">                      
+                      <option value="">Todos</option>
+                      <% categoriesData.forEach(c => { %>                    
+                        <option value="<%= c.id %>" <%= query.id_category === c.id ? 'selected' : '' %> >
+                          <%= c.name %>
+                        </option>                    
+                      <% }) %>
+                    </select>
+                </div>
+              </div>
+              <div class="products-filters-bts">
+                <a href="/admin/dashboard" class="reset-filters-btn">Limpiar</a>                
+                <button class="btn-filter" type="submit">Filtrar</button>
+              </div>
+            </form>
+          </div>
+
+          <table class="dashboard-list">
+            <thead>
+              <tr>
+                  <th>Mensaje</th>                  
+                </tr>
+              </thead>
+              <tbody>              
+                  <tr>
+                    <td>
+                      No hay productos registrados.
+                    </td>                    
+                  </tr>             
+              </tbody>
+            </table>  
         </section>  
       <% } %>
+
       
       <% if (usersData && usersData.length > 0) { %>
-        <section id="users-section" class="tab-content">
+        <section id="users-section" class="tab-content">          
           <table class="dashboard-list">
             <thead>
               <tr>
@@ -247,7 +310,7 @@
           </div>
         </div>
       </div>
-
+      </div>
     </main>
     <%- include('partials/footer') %>
     

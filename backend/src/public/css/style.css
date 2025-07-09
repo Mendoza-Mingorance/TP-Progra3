@@ -50,11 +50,12 @@ body {
 
 main {
     flex: 1;
+    animation: slideIn 0.6s ease-out;
 }
 
 header {
     font-size: 1.2rem;
-    margin: 1rem;
+    margin: 1rem 2rem;
 }
 
 header h1 {
@@ -94,7 +95,7 @@ header nav ul li a:hover {
 }
 
 .active {
-    color: var(--color-primary) !important;
+    color: var(--text-muted) !important;
     font-weight: bolder;
     text-shadow: var(--shadow-lg);
     position: relative;
@@ -153,6 +154,93 @@ header nav ul li a:hover {
 .logoutBtn:hover::before {
     left: 100%;
 }
+
+h1 {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    font-size: 2.3rem;
+    font-weight: 700;
+    text-shadow: var(--shadow);
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--border-color), var(--text-muted));
+    border-radius: 2px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-size: 1rem;
+    text-transform: uppercase;
+    position: relative;
+}
+
+label::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--color-primary), var(--bg-alter-color));
+    border-radius: 2px;
+    opacity: 0.7;
+}
+
+input,
+select,
+textarea {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem;
+    background-color: rgba(var(--card-color), 0.5);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: var(--color-secondary);
+    box-shadow: var(--shadow);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+input:focus + label,
+textarea:focus + label {
+    color: var(--color-primary);
+}
+
+
+
 footer {
     display: flex;
     background-color: rgba(var(--card-color));
@@ -176,4 +264,60 @@ footer {
         gap: 1rem;
         text-align: center;
     }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.switch {
+    display: inline-block;
+    position: relative;
+}
+.switch input {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+
+.turn-on-off {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    background-color: var(--bg-alter-color);
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.4s;
+    overflow: hidden;
+}
+
+.icon {
+    position: absolute;
+    line-height: 29px;
+    text-align: center;
+    font-size: 1.2rem;
+    top: 0;
+    transition: transform 0.4s ease;
+}
+input:checked + .turn-on-off .icon {
+    transform:rotateX(180deg);
+}
+
+.admin-data p {
+    position: absolute;
+    top: 5rem;
+    right: 2rem;
 }

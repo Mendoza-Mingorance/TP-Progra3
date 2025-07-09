@@ -205,7 +205,7 @@ paginationBtn.forEach(btn => {
     });
 });
 
-searchBar.addEventListener('keyup', () => {
+searchBar.addEventListener('submit', () => {
     let valueInput = searchBar.value.toLowerCase().trim();
     console.log(valueInput);
     
