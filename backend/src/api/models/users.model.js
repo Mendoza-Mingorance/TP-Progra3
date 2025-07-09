@@ -13,7 +13,18 @@ export const registerUserModel = async (email, name, surname, role, password) =>
     }
 };
 
-export const getUserByEmailModel = async email => {
+export const deleteUserModel = async (id) => {
+    try {
+        const sql = 'DELETE FROM users WHERE id = ?';
+        await connection.query(sql, [id]);
+        return true;
+    } catch (error) {
+        console.error('Error en modelo eliminando usuario:', error.message);
+        throw new Error('Error eliminando usuario en el modelo');
+    }
+}
+
+export const getUserByEmailModel = async (email) => {
     try {
         const sql = 'SELECT * FROM users WHERE email = ?';
         const [rows] = await connection.query(sql, [email]);

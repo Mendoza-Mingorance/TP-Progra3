@@ -15,14 +15,14 @@ import { auth } from '../middlewares/auth.js';
 const router = Router();
 
 router.get('/', getProducts);
-router.post('/', auth, uploadFile.single('image'), createProduct);
+router.post('/', auth(['admin', 'manager']), uploadFile.single('image'), createProduct);
 
 router.get('/active', getProductsActive);
 router.get('/inactive', getProductsInactive);
-router.patch('/status/:id', auth, changeProductsAvailable);
+router.patch('/status/:id', auth(['admin', 'manager']), changeProductsAvailable);
 
 router.get('/:id', getProductById);
-router.put('/:id', auth, uploadFile.single('image'), updateProduct);
-router.delete('/:id', auth, deleteProduct);
+router.put('/:id', auth(['admin', 'manager']), uploadFile.single('image'), updateProduct);
+router.delete('/:id', auth(['admin']), deleteProduct);
 
 export default router;

@@ -87,7 +87,7 @@ export const fetchInactiveProductsModel = async () => {
     }
 };
 
-export const fetchProductByID = async id => {
+export const fetchProductByID = async (id) => {
     try {
         const sql = `SELECT * FROM products WHERE id = ?`;
         const [rows] = await connection.query(sql, [id]);

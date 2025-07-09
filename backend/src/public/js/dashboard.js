@@ -1,11 +1,16 @@
 const deleteButtons = document.querySelectorAll('.deleteBtn');
 const deleteModal = document.getElementById('deleteModal');
+const deleteUserModal = document.getElementById('deleteUserModal');
 const cancelDelete = document.getElementById('cancelDelete');
+const cancelUserDelete = document.getElementById('cancelUserDelete');
 const deleteForm = document.getElementById('deleteForm');
 const deleteProductIdInput = document.getElementById('deleteProductId');
+const deleteUserBtns = document.querySelectorAll('.deleteUserBtn');
+const deleteUserIdInput = document.getElementById('deleteUserId');
 
 const activateButtons = document.querySelectorAll('.activateBtn');
 const confirmDelete = document.getElementById('confirmDelete');
+const confirmUserDelete = document.getElementById('confirmUserDelete');
 const activateModal = document.getElementById('activateModal');
 const cancelActivate = document.getElementById('cancelActivate');
 const confirmActivate = document.getElementById('confirmActivate');
@@ -104,6 +109,45 @@ confirmActivate.addEventListener('click', async () => {
 });
 
 // -------------------------------- //
+
+// Modal de eliminacion de Usuarios 
+
+deleteUserBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const userId = btn.dataset.id;
+        
+        deleteUserIdInput.value = userId;
+        deleteUserModal.classList.remove('hidden');
+    });
+});
+
+cancelUserDelete.addEventListener('click', () => {
+    deleteUserModal.classList.add('hidden');
+});
+
+confirmUserDelete.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const deleteUserId = deleteUserIdInput.value;
+    
+    try {
+        const res = await fetch(`/admin/users/delete/${deleteUserId}`, {
+            method: 'POST',
+        });
+    
+        if (res.ok) { 
+            deleteUserModal.classList.add('hidden');
+            window.location.reload();
+        } else {
+            console.error('Error al eliminar el usuario');
+        }
+    } catch (err) {
+        console.error('Error al enviar solicitud de eliminación de usuario', err);
+    }
+});
+
+
+// -------------------------------- //
+
 
 editBtn.forEach(btn => {
     btn.addEventListener('click', () => {

@@ -8,9 +8,8 @@ import {
     updateProductStatus,
 } from '../models/products.model.js';
 import { fetchSalesModel } from '../models/sales.model.js';
-import { fetchUsersModel, getUserByEmailModel, registerUserModel } from '../models/users.model.js';
+import { deleteUserModel, fetchUsersModel, getUserByEmailModel, registerUserModel } from '../models/users.model.js';
 import { createHash, verifyToken } from '../utils/utils.js';
-import { getSales } from './sales.controller.js';
 
 export const loginView = (req, res) => {
     const token = verifyToken(req.cookies.jwt);
@@ -121,11 +120,11 @@ export const usersView = async (req, res) => {
     res.render('users', { adminData });
 };
 
-export const registerAdminUser = async (req, res) => {
+export const registerUser = async (req, res) => {
     try {
-        const { email, name, surname, role = 'admin', password } = req.body;
+        const { email, name, surname, role, password } = req.body;
 
-        if (!email || !password || !name || !surname) {
+        if (!email || !password || !name || !surname || !role) {
             return res.status(400).json({ message: 'Faltan campos obligatorios' });
         }
 
@@ -138,7 +137,7 @@ export const registerAdminUser = async (req, res) => {
         await registerUserModel(email, name, surname, role, hashedPassword);
 
         const mailer = new Mail();
-        await mailer.sendAdminMail(email, name);
+        await mailer.sendMail(email, name, role);
 
         res.status(200).json({ message: `Usuario ${email} registrado` });
     } catch (error) {
@@ -146,3 +145,16 @@ export const registerAdminUser = async (req, res) => {
         res.status(500).json({ message: "Internal server error. Couldn't register user" });
     }
 };
+
+export const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log('id desde controller', id);
+        
+        await deleteUserModel(id)
+        res.status(200).json({ message: 'Usuario eliminado' });
+    } catch (error) {
+        console.error('Error al eliminar usuario:', error.message);
+        res.status(500).json({ message: "Internal server error. Couldn't delete user" });
+    }
+}

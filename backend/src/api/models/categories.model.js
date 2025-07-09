@@ -13,7 +13,7 @@ export const fetchCategoriesModel = async () => {
     }
 };
 
-export const fetchCategoriesByIdModel = async id => {
+export const fetchCategoriesByIdModel = async (id) => {
     try {
         let sql = `SELECT * FROM categories WHERE id = ?`;
 
@@ -26,7 +26,7 @@ export const fetchCategoriesByIdModel = async id => {
     }
 };
 
-export const createCategoryModel = async category => {
+export const createCategoryModel = async (category) => {
     try {
         const sql = `INSERT INTO categories SET ?`;
 
@@ -61,7 +61,7 @@ export const updateCategoryModel = async (id, fields) => {
     }
 };
 
-export const deleteCategoryModel = async id => {
+export const deleteCategoryModel = async (id) => {
     try {
         const sql = `DELETE FROM categories WHERE id= ?`;
 

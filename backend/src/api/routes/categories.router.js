@@ -11,11 +11,11 @@ const router = Router();
 
 router.get('/', getCategories);
 
-router.post('/', auth, createCategory);
+router.post('/', auth(['admin', 'manager']), createCategory);
 
 router.route('/:id')
     .get(getCategoriesById)
-    .put(auth, updateCategory)
-    .delete(auth, deleteCategory);
+    .put(auth(['admin', 'manager']), updateCategory)
+    .delete(auth(['admin', 'manager']), deleteCategory);
 
 export default router;

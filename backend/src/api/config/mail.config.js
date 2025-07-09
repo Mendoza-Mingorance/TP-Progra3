@@ -11,15 +11,16 @@ export default class Mail {
             }
     })}
 
-    sendAdminMail = async (email, name) => {
+    sendMail = async (email, name, role) => {
         const options = {
             from: config.mail_user,
             to: email,
-            subject: "MM - New Admin Account",
+            subject: "MM - New Account",
             html:`
             <h1>Hi ${name}!</h1>
             <br>
-            <p>Your admin account has been created.</p>
+            <p>Your ${role} account has been created.</p>
+            <p>You can now <a href= "${config.panelAdmin_url}">login here</a></p>
             <br>
             `
           }

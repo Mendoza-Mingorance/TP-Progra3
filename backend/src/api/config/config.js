@@ -18,6 +18,12 @@ const config = {
     mail_pass: process.env.MAIL_PASS,
 }
 
+if (config.env === 'development') {
+    config.panelAdmin_url = process.env.DEV_URL
+} else {
+    config.panelAdmin_url = process.env.PROD_URL
+}
+
 
 export default config
 
