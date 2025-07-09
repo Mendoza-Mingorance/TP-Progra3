@@ -21,6 +21,12 @@ const editBtn = document.querySelectorAll('.editBtn');
 const tabBtn = document.querySelectorAll('.tab-btn');
 const sectionsTabs = document.querySelectorAll('.tab-content');
 
+//Filtros y paginado
+const formFilter = document.querySelector('.products-section-filters');
+const paginationBtn = document.querySelectorAll('.pagination-btn');
+const tableChange = document.querySelector('#products-section');
+const searchBar = document.querySelector('.search-bar');
+
 // Modal de eliminacion de productos
 
 deleteButtons.forEach(btn => {
@@ -110,12 +116,12 @@ confirmActivate.addEventListener('click', async () => {
 
 // -------------------------------- //
 
-// Modal de eliminacion de Usuarios 
+// Modal de eliminacion de Usuarios
 
 deleteUserBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const userId = btn.dataset.id;
-        
+
         deleteUserIdInput.value = userId;
         deleteUserModal.classList.remove('hidden');
     });
@@ -125,16 +131,16 @@ cancelUserDelete.addEventListener('click', () => {
     deleteUserModal.classList.add('hidden');
 });
 
-confirmUserDelete.addEventListener('click', async (e) => {
+confirmUserDelete.addEventListener('click', async e => {
     e.preventDefault();
     const deleteUserId = deleteUserIdInput.value;
-    
+
     try {
         const res = await fetch(`/admin/users/delete/${deleteUserId}`, {
             method: 'POST',
         });
-    
-        if (res.ok) { 
+
+        if (res.ok) {
             deleteUserModal.classList.add('hidden');
             window.location.reload();
         } else {
@@ -145,9 +151,7 @@ confirmUserDelete.addEventListener('click', async (e) => {
     }
 });
 
-
 // -------------------------------- //
-
 
 editBtn.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -156,13 +160,61 @@ editBtn.forEach(btn => {
     });
 });
 
+//Vavegacion entre tablas
 tabBtn.forEach(btn => {
-    btn.addEventListener('click',()=>{
-        tabBtn.forEach(b => b.classList.remove('activeSection'))
-        sectionsTabs.forEach(s => s.classList.remove('activeSection'))
+    btn.addEventListener('click', () => {
+        tabBtn.forEach(b => b.classList.remove('activeSection'));
+        sectionsTabs.forEach(s => s.classList.remove('activeSection'));
 
-        btn.classList.add('activeSection')
-        const targetId = btn.getAttribute('data-target')
-        document.getElementById(targetId).classList.add('activeSection')
+        btn.classList.add('activeSection');
+        const targetId = btn.getAttribute('data-target');
+        document.getElementById(targetId).classList.add('activeSection');
+    });
+});
+
+//Filtros y paginado
+const updateQueryPath = params => {
+    const path = new URL(window.location);
+    Object.keys(params).forEach(k => {
+        if (params[k] !== null && params[k] !== undefined && params[k] !== '') {
+            path.searchParams.set(k, params[k]);
+        } else {
+            path.searchParams.delete(k);
+        }
+    });
+    window.location.href = path.toString();
+};
+
+function getQueryPath() {
+    const params = {};
+    const urlParams = new URLSearchParams(window.location.search);
+    for (const [key, value] of urlParams) {
+        params[key] = value;
+    }
+    return params;
+}
+paginationBtn.forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+        const page = btn.dataset.page;
+        const currentParams = getQueryPath();
+        updateQueryPath({
+            ...currentParams,
+            offset: page,
+        });
+    });
+});
+
+searchBar.addEventListener('keyup', () => {
+    let valueInput = searchBar.value.toLowerCase().trim();
+    console.log(valueInput);
+    
+    let currentParams = getQueryPath();
+    console.log(currentParams);
+    
+    updateQueryPath({
+        ...currentParams,
+        name: valueInput,
+        
     });
 });

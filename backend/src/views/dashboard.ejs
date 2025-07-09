@@ -13,41 +13,66 @@
         <button class="tab-btn" data-target="categories-section">Categorías</button>
         <button class="tab-btn" data-target="sales-section">Ventas</button>
       </div>
+
       <% if (products.length > 0) { %>
         <section id="products-section" class="tab-content activeSection">
-          <table class="dashboard-list">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Disponible</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody class="dashboard-product-items">
-              <% products.forEach(product => { %>
-                <tr class="dashboard-product-item">
-                  <td><%= product.id%></td>
-                  <td class="product-image-container"><img src="/uploads/<%= product.url_image %>" alt="<%= product.name %>"></td>
-                  <td><%= product.name%></td>
-                  <td>$<%= product.price %></td>
-                  <td><%= product.stock %></td>
-                  <td><%= product.available %></td>
-                  <td >
-                    <div class="dashboard-actions-btns">
-                      <button class="activateBtn" data-id="<%= product.id %>"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
-                      <button class="editBtn" data-id="<%= product.id %>"><img src="/assets/icons/edit.svg" alt="editar producto"></button>  
-                      <button class="deleteBtn" data-id="<%= product.id %>"><img src="/assets/icons/trash-can.svg" alt="baja producto"></button>  
+            <label>Buscador
+              <input type="text" class="search-bar" name="name" placeholder="Buscar por nombre" value="<%= query.name||''%>">          
+            </label>
+            <form method="GET" action="/admin/dashboard" class="products-section-filters">
+              <button type="submit">Filtrar</button>
+            </form>
+            <div>
 
-                    </div>
-                  </td>
+            <table class="dashboard-list">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Imagen</th>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Disponible</th>
+                  <th>Acciones</th>
                 </tr>
+              </thead>
+              <tbody class="dashboard-product-items">
+                <% products.forEach(product => { %>
+                  <tr class="dashboard-product-item">
+                    <td><%= product.id%></td>
+                    <td class="product-image-container"><img src="/uploads/<%= product.url_image %>" alt="<%= product.name %>"></td>
+                    <td><%= product.name%></td>
+                    <td>$<%= product.price %></td>
+                    <td><%= product.stock %></td>
+                    <td><%= product.available %></td>
+                    <td >
+                      <div class="dashboard-actions-btns">
+                        <button class="activateBtn" data-id="<%= product.id %>"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
+                        <button class="editBtn" data-id="<%= product.id %>"><img src="/assets/icons/edit.svg" alt="editar producto"></button>  
+                        <button class="deleteBtn" data-id="<%= product.id %>"><img src="/assets/icons/trash-can.svg" alt="baja producto"></button>  
+                        
+                      </div>
+                    </td>
+                  </tr>
                   <% }) %>
                 </tbody>
-            </table> 
+              </table>
+
+                <% if (pagination > 1) { %>
+                  <div class="pagination">
+                    <button <% if (currentPage > 1) { %>
+                      <button href="#" class="pagination-btn" data-page="<%= currentPage - 1 %>">Anterior</button>
+                    <% } %>
+                    <% for (let i = 1; i <= pagination; i++) { %>
+                      <button href="#" class="pagination-btn <%= i === currentPage ? 'activePag' : '' %>" data-page="<%= i %>"><%= i %></button>
+                    <% } %>
+                    <% if (currentPage < pagination) { %>
+                      <button href="#" class="pagination-btn" data-page="<%= currentPage + 1 %>">Siguiente</button>
+                    <% } %>
+                  </div>
+                <% } %>
+              
+            </div>
         </section>    
       <% } else { %>
         <section id="products-section" class="tab-content activeSection">
