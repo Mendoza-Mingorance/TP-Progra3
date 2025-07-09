@@ -90,6 +90,7 @@ h1 {
     background: none;
     border: none;
     display: flex;
+    justify-content: center;
     cursor: pointer;
     gap: 0.3rem;
 }

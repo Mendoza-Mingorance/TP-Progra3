@@ -1,56 +1,70 @@
+
 <%- include('partials/head') %>
-    <link rel="stylesheet" href="/css/users.css">
-    <script src="/js/users.js" defer></script>
-    <title>Usuarios</title>
+<link rel="stylesheet" href="/css/users.css">
+<script src="/js/users.js" defer></script>
+<title>Usuarios</title>
 </head>
+
 <body class="container">
-    <%- include('partials/header') %>
-    <main>
+  <%- include('partials/header') %>
 
-        
-        <h1>Usuarios</h1>
-        
-        <form id="adminUserForm">
+  <main class="main-content">
+    <h1 class="title">Usuarios</h1>
+
+    <form id="adminUserForm" class="form-card">
+        <div class="form-row">
             <div>
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email" required>
+                <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" name="name" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
             </div>
             
             <div>
-                <label for="name">Nombre:</label>
-                <input type="text" name="name" id="name" required>
-            </div>
-            
-            <div>
-                <label for="surname">Apellido:</label>
-                <input type="text" name="surname" id="surname" required>
-            </div>
-            
-            <div>
-                <label for="password">Contraseña:</label>
-                <input type="password" name="password" id="password" required>
-            </div>
-            
-            <div >
-                <button id="createUserBtn" type="submit">Crear Usuario Admin</button>
-            </div>
-        </form>
-        
-        <div id="successModal" class="modal hidden">
-            <div class="modal-content">
-                <p>Usuario administrador creado exitosamente ✅</p>
-                <p>Mail de confirmación enviado al usuario.</p>
-                <button id="closeSuccessModal">Aceptar</button>
+                <div class="form-group">
+                    <label for="surname">Apellido:</label>
+                    <input type="text" name="surname" id="surname" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" name="password" id="password" required>
+                </div>
             </div>
         </div>
-        
-        <div id="errorModal" class="modal hidden">
-            <div class="modal-content">
-                <p id="errorMessage">Ocurrió un error al crear el usuario ❌</p>
-                <button id="closeErrorModal">Cerrar</button>
-            </div>
+        <div class="form-group form-role">
+            <label for="role">Rol:</label>
+            <select name="role" id="role" required>
+                <option value="admin">Admin</option>
+                <option value="manager">Manager</option>
+            </select>
         </div>
-        
-    </main>
 
-    <%- include('partials/footer') %>
+        <div class="form-group text-center">
+            <button id="createUserBtn" type="submit" class="">
+                <span class="createUserSpan">Crear Usuario</span>
+                <span class="loader hidden"><i class="fa-solid fa-spinner fa-spin-pulse"></i></span>
+            </button>
+        </div>
+    </form>
+
+    <div id="successModal" class="modal hidden">
+      <div class="modal-content">
+        <p class="modal-text success">Usuario creado exitosamente ✅</p>
+        <p class="modal-subtext">Mail de confirmación enviado.</p>
+        <button id="closeSuccessModal" class="btn-success">Aceptar</button>
+      </div>
+    </div>
+
+    <div id="errorModal" class="modal hidden">
+      <div class="modal-content">
+        <p id="errorMessage" class="modal-text error">Ocurrió un error al crear el usuario ❌</p>
+        <button id="closeErrorModal" class="btn-error">Cerrar</button>
+      </div>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>

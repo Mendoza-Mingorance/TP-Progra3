@@ -64,6 +64,9 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Rol</th>
+                <% if (adminData.role === 'admin') { %>
+                  <th>Acciones</th>
+                <% } %>
               </tr>
             </thead>
             <tbody>
@@ -72,7 +75,16 @@
                   <td><%= user.id %></td>
                   <td><%= user.name %></td>
                   <td><%= user.email %></td>
-                  <td><%= user.role %></td>                  
+                  <td><%= user.role %></td>
+                  <% if (adminData.role === 'admin') { %>
+                    <td>
+                      <div class="dashboard-actions-btns">
+                        <!-- <button class="activateUserBtn" data-id="<%= user.id %>"><img src="/assets/icons/alta-arrow.svg" alt="alta usuario"></button>  
+                        <button class="editUserBtn" data-id="<%= user.id %>"><img src="/assets/icons/edit.svg" alt="editar usuario"></button>   -->
+                        <button class="deleteUserBtn" data-id="<%= user.id %>"><img src="/assets/icons/trash-can.svg" alt="eliminar usuario"></button>  
+                      </div>
+                    </td>   
+                  <% } %>               
                 </tr>
               <% }) %>
             </tbody>
@@ -182,6 +194,19 @@
               <button type="button" id="cancelDelete">Cancelar</button>
               <button type="submit">Desactivar producto</button>
               <button type="button" id="confirmDelete">Eliminar producto</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="deleteUserModal" class="modal hidden">
+        <div class="modal-content">
+          <p>¿Eliminar Usuario?</p>
+          <form id="deleteUserForm" method="POST">
+            <input type="hidden" name="id" id="deleteUserId">
+            <div class="modal-buttons">
+              <button type="button" id="cancelUserDelete">Cancelar</button>
+              <button type="submit" id="confirmUserDelete">Eliminar Usuario</button>
             </div>
           </form>
         </div>

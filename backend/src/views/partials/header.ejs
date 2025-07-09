@@ -7,10 +7,12 @@
             <li><a href="/admin/dashboard">Dashboard</a></li>
             <li><a href="/admin/altas">New Product</a></li>
             <li><a href="/admin/modificaciones">Update Product</a></li>
+            <% if (adminData.role === 'admin') { %>
             <li><a href="/admin/usuarios">Users</a></li>
+            <% } %>
         </ul>
         <div class="admin-data">
-            <p>Hola <%= adminData.name %>!</p>
+            <p>Hola <%= adminData.name %>!<small><i> (<%= adminData.role %>)</i></small></p>
             <button class="logoutBtn" onclick="logout()">Logout</button>
         </div>
     </nav>

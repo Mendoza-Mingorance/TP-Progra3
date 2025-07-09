@@ -1,5 +1,4 @@
 
-
 .modal {
   position: fixed;
   top: 0;
@@ -18,8 +17,164 @@
   padding: 2rem;
   border-radius: 10px;
   text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .hidden {
   display: none;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.main-content {
+  max-width: 800px;
+  margin: 0px auto 30px auto;
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(var(--card-color), 0.7);
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-row{
+  display: flex;
+  gap: 20px;
+}
+
+#createUserBtn{
+  margin-top: 18px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.form-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-role label {
+  margin-right: 5px;
+  display: inline;
+}
+
+.btn-primary,
+.btn-success,
+.btn-error {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-error {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-error:hover {
+  background-color: #c82333;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.modal-text {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.modal-subtext {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.modal-text.success {
+  color: #28a745;
+}
+
+.modal-text.error {
+  color: #dc3545;
+}
+
+#createUserBtn {
+  position: relative;
+  border: none;
+  background-color: rgba(72, 187, 120, 0.7); 
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 0.5rem 1.2rem;
+  color: #fff;
+  box-shadow: var(--shadow); 
+  transition: transform 0.5s, box-shadow 0.5s;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#createUserBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+#createUserBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(72, 187, 120, 0.6), transparent);
+  transition: left 0.5s;
+  z-index: 0;
+}
+
+#createUserBtn:hover::before {
+  left: 100%;
+}
+
+#createUserBtn:focus {
+  outline: none;
+}
+
+#createUserBtn {
+  position: relative;
+  z-index: 1;
+  min-width: 125px
 }

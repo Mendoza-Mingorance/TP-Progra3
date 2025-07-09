@@ -5,10 +5,10 @@ import { auth } from '../middlewares/auth.js';
 const router = Router();
 
 router.post('/', createSale)
-router.get('/', auth, getSales);
-router.get('/products', auth, getSalesWithProducts)
+router.get('/', auth(['admin', 'manager']), getSales);
+router.get('/products', auth(['admin', 'manager']), getSalesWithProducts)
 
-router.get('/export', auth, exportSaleExcel)
-router.get('/:id', auth, getSaleById)
+router.get('/export', auth(['admin', 'manager']), exportSaleExcel)
+router.get('/:id', auth(['admin', 'manager']), getSaleById)
 
 export default router;
