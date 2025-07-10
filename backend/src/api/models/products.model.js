@@ -30,11 +30,11 @@ export const fetchProductsModel = async (queryParams) => {
             countFilters.push(value);
         };
 
-        if (available) applyFilters(` AND available = ?`, available);
-        if (id_category) applyFilters(` AND id_category = ?`, id_category);
-        if (minPrice) applyFilters(` AND price >= ?`, minPrice);
-        if (maxPrice) applyFilters(` AND price <= ?`, maxPrice);
-        if (name) applyFilters(` AND name LIKE ?`, `%${name}%`);
+        if (available) applyFilters(` AND p.available = ?`, available);
+        if (id_category) applyFilters(` AND p.id_category = ?`, id_category);
+        if (minPrice) applyFilters(` AND p.price >= ?`, minPrice);
+        if (maxPrice) applyFilters(` AND p.price <= ?`, maxPrice);
+        if (name) applyFilters(` AND p.name LIKE ?`, `%${name}%`);
 
         const sortBy = connection.escapeId(sortValids.includes(sort) ? sort : 'name');
         const sortOrder = orderValid.includes(order?.toLowerCase()) ? order.toUpperCase() : 'ASC';

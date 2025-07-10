@@ -8,7 +8,12 @@ import {
     updateProductStatus,
 } from '../models/products.model.js';
 import { fetchSalesModel } from '../models/sales.model.js';
-import { deleteUserModel, fetchUsersModel, getUserByEmailModel, registerUserModel } from '../models/users.model.js';
+import {
+    deleteUserModel,
+    fetchUsersModel,
+    getUserByEmailModel,
+    registerUserModel,
+} from '../models/users.model.js';
 import { createHash, verifyToken } from '../utils/utils.js';
 
 export const loginView = (req, res) => {
@@ -19,12 +24,24 @@ export const loginView = (req, res) => {
 export const dashboardView = async (req, res) => {
     try {
         const adminData = req.user;
-        const productsData = await fetchProductsModel(req.query);
+
+        const limit = parseInt(req.query.limit) || 5;
+        const page = parseInt(req.query.offset) || 1;
+        const offset = (page - 1) * limit;
+
+        const queryParams = {
+            ...req.query,
+            limit,
+            offset,
+        };
+
+        const productsData = await fetchProductsModel(queryParams);
         const usersData = await fetchUsersModel();
         const categoriesData = await fetchCategoriesModel();
         const salesData = await fetchSalesModel();
 
         const products = productsData.data;
+        const pagination = Math.ceil(productsData.total/limit)
 
         res.status(200).render('dashboard', {
             products,
@@ -32,6 +49,10 @@ export const dashboardView = async (req, res) => {
             categoriesData: categoriesData || [],
             salesData: salesData || [],
             adminData,
+            currentPage:page,
+            pagination,
+            query:req.query,
+            totalProducts: productsData.total
         });
     } catch (error) {
         console.error('Dashboard error:', error);
@@ -150,11 +171,11 @@ export const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
         console.log('id desde controller', id);
-        
-        await deleteUserModel(id)
+
+        await deleteUserModel(id);
         res.status(200).json({ message: 'Usuario eliminado' });
     } catch (error) {
         console.error('Error al eliminar usuario:', error.message);
         res.status(500).json({ message: "Internal server error. Couldn't delete user" });
     }
-}
+};

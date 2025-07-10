@@ -6,57 +6,145 @@
   <body class="container">
     <%- include('partials/header') %>
     <main>
+      <div class="dashboard-container">
       <h1>Panel de Control</h1>
       <div class="tabs-options">
-        <button class="tab-btn active" data-target="products-section">Productos</button>
+        <button class="tab-btn activeSection" data-target="products-section">Productos</button>
         <button class="tab-btn" data-target="users-section">Usuarios</button>
         <button class="tab-btn" data-target="categories-section">Categorías</button>
         <button class="tab-btn" data-target="sales-section">Ventas</button>
       </div>
+
       <% if (products.length > 0) { %>
         <section id="products-section" class="tab-content activeSection">
-          <table class="dashboard-list">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Disponible</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody class="dashboard-product-items">
-              <% products.forEach(product => { %>
-                <tr class="dashboard-product-item">
-                  <td><%= product.id%></td>
-                  <td class="product-image-container"><img src="/uploads/<%= product.url_image %>" alt="<%= product.name %>"></td>
-                  <td><%= product.name%></td>
-                  <td>$<%= product.price %></td>
-                  <td><%= product.stock %></td>
-                  <td><%= product.available %></td>
-                  <td >
-                    <div class="dashboard-actions-btns">
-                      <button class="activateBtn" data-id="<%= product.id %>"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
-                      <button class="editBtn" data-id="<%= product.id %>"><img src="/assets/icons/edit.svg" alt="editar producto"></button>  
-                      <button class="deleteBtn" data-id="<%= product.id %>"><img src="/assets/icons/trash-can.svg" alt="baja producto"></button>  
-
+            <div class="products-filters">            
+              <h2>
+                Filtros           
+              </h2>
+              <form method="GET" action="/admin/dashboard" class="products-form-filters"> 
+                <div class="products-filters-inputs">
+                  <div>
+                    <label >Buscador</label>
+                    <input type="text" class="search-bar" name="name" placeholder="Buscar por nombre" value="<%= query.name||''%>">       
+                  </div>
+                  <div>
+                    <label >Categorias</label>
+                      <select name="id_category">                      
+                        <option value="">Todos</option>
+                        <% categoriesData.forEach(c => { %>                    
+                          <option value="<%= c.id %>" <%= query.id_category === c.id ? 'selected' : '' %> >
+                            <%= c.name %>
+                          </option>                    
+                        <% }) %>
+                      </select>
                     </div>
-                  </td>
+                  </div>
+                  <div class="products-filters-bts">
+                    <a href="/admin/dashboard" class="reset-filters-btn">Limpiar</a>                
+                    <button class="btn-filter" type="submit">Filtrar</button>
+                  </div>
+              </form>
+            </div>       
+
+            <table class="dashboard-list">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Imagen</th>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Disponible</th>
+                  <th>Acciones</th>
                 </tr>
+              </thead>
+              <tbody class="dashboard-product-items">
+                <% products.forEach(product => { %>
+                  <tr class="dashboard-product-item">
+                    <td><%= product.id%></td>
+                    <td class="product-image-container"><img src="/uploads/<%= product.url_image %>" alt="<%= product.name %>"></td>
+                    <td><%= product.name%></td>
+                    <td>$<%= product.price %></td>
+                    <td><%= product.stock %></td>
+                    <td><%= product.available %></td>
+                    <td >
+                      <div class="dashboard-actions-btns">
+                        <button class="activateBtn" data-id="<%= product.id %>"><img src="/assets/icons/alta-arrow.svg" alt="alta producto"></button>  
+                        <button class="editBtn" data-id="<%= product.id %>"><img src="/assets/icons/edit.svg" alt="editar producto"></button>  
+                        <button class="deleteBtn" data-id="<%= product.id %>"><img src="/assets/icons/trash-can.svg" alt="baja producto"></button>  
+                        
+                      </div>
+                    </td>
+                  </tr>
                   <% }) %>
                 </tbody>
-            </table> 
+              </table>
+
+                <% if (pagination > 1) { %>
+                  <div class="pagination">
+                    <button <% if (currentPage > 1) { %>
+                      <button href="#" class="pagination-btn" data-page="<%= currentPage - 1 %>">Anterior</button>
+                    <% } %>
+                    <% for (let i = 1; i <= pagination; i++) { %>
+                      <button href="#" class="pagination-btn <%= i === currentPage ? 'activePag' : '' %>" data-page="<%= i %>"><%= i %></button>
+                    <% } %>
+                    <% if (currentPage < pagination) { %>
+                      <button href="#" class="pagination-btn" data-page="<%= currentPage + 1 %>">Siguiente</button>
+                    <% } %>
+                  </div>
+                <% } %>     
         </section>    
       <% } else { %>
         <section id="products-section" class="tab-content activeSection">
-          <p>No se encontraron productos.</p>
+          <div class="products-filters">            
+            <h3>
+              Filtros           
+            </h3>
+            <form method="GET" action="/admin/dashboard" class="products-form-filters"> 
+              <div class="products-filters-inputs">
+                <div>
+                  <label >Buscador</label>
+                  <input type="text" class="search-bar" name="name" placeholder="Buscar por nombre" value="<%= query.name||''%>">       
+                </div>
+                <div>
+                  <label >Categorias</label>
+                    <select name="id_category">                      
+                      <option value="">Todos</option>
+                      <% categoriesData.forEach(c => { %>                    
+                        <option value="<%= c.id %>" <%= query.id_category === c.id ? 'selected' : '' %> >
+                          <%= c.name %>
+                        </option>                    
+                      <% }) %>
+                    </select>
+                </div>
+              </div>
+              <div class="products-filters-bts">
+                <a href="/admin/dashboard" class="reset-filters-btn">Limpiar</a>                
+                <button class="btn-filter" type="submit">Filtrar</button>
+              </div>
+            </form>
+          </div>
+
+          <table class="dashboard-list">
+            <thead>
+              <tr>
+                  <th>Mensaje</th>                  
+                </tr>
+              </thead>
+              <tbody>              
+                  <tr>
+                    <td>
+                      No hay productos registrados.
+                    </td>                    
+                  </tr>             
+              </tbody>
+            </table>  
         </section>  
       <% } %>
+
       
       <% if (usersData && usersData.length > 0) { %>
-        <section id="users-section" class="tab-content">
+        <section id="users-section" class="tab-content">          
           <table class="dashboard-list">
             <thead>
               <tr>
@@ -144,8 +232,10 @@
             </table>     
         </section>     
       <% } %>
+
       <% if (salesData && salesData.length > 0) { %>
           <section id="sales-section" class="tab-content">
+            <button id="sales-download">Descargar Ventas</button>
             <table class="dashboard-list">
               <thead>
                 <tr>
@@ -222,7 +312,7 @@
           </div>
         </div>
       </div>
-
+      </div>
     </main>
     <%- include('partials/footer') %>
     
