@@ -19,9 +19,14 @@ const config = {
 }
 
 if (config.env === 'development') {
-    config.panelAdmin_url = process.env.DEV_URL
+    config.panelAdmin_url = process.env.DEV_URL;
 } else {
-    config.panelAdmin_url = process.env.PROD_URL
+    config.panelAdmin_url = process.env.PROD_URL;
+    config.db.host = process.env.DB_PROD_HOST;
+    config.db.user = process.env.DB_PROD_USER;
+    config.db.password = process.env.DB_PROD_PASSWORD;
+    config.db.name = process.env.DB_PROD_NAME;
+    config.db.port = process.env.DB_PROD_PORT;
 }
 
 
