@@ -88,8 +88,10 @@ export const updateProductPost = async (req, res) => {
         const { id, ...fieldsToUpdate } = req.body;
 
         if (req.file) {
-            fieldsToUpdate.url_image = req.file.filename;
+            fieldsToUpdate.url_image = req.file.path;
         }
+        console.log(fieldsToUpdate);
+        
 
         await updateProductModel(id, fieldsToUpdate);
 

@@ -105,10 +105,11 @@ export const updateProduct = async (req, res) => {
             return res.status(400).json({ message: 'Id invalido' });
         }
 
-        if (req.file?.url) {
-            fields.url_image = req.file.url;
+        if (req.file?.path) {
+            fields.url_image = req.file.path;
         }
-
+        console.log(fields);
+        
         if (Object.keys(fields).length === 0) {
             return res.status(400).json({ message: 'No hay datos para actualizar' });
         }
