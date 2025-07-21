@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { fetchProductByID } from '../models/products.model.js';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -15,3 +16,15 @@ export const storage = new CloudinaryStorage({
     public_id: (req, file) => `product-${Date.now()}`
   }
 });
+
+export const deleteImage = async(id) => {
+    const [product] = await fetchProductByID(id);
+    console.log(product.url_image);
+
+    const filename = product.url_image.split('/').slice(-2).join('/');
+    const publicId = filename.split('.').slice(0, -1).join('.');
+
+    if (publicId) {
+        await cloudinary.uploader.destroy(publicId);
+    }
+}
