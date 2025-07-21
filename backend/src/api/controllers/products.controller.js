@@ -77,7 +77,7 @@ export const createProduct = async (req, res) => {
     try {
         let { name, price, description, id_category, stock } = req.body;
         const available = stock <= 0 ? 'out of stock' : 'active';
-        const url_image = req.file?.filename || '';
+        const url_image = req.file?.path || '';
 
         price = parseFloat(price);
         id_category = parseInt(id_category, 10);
@@ -105,8 +105,8 @@ export const updateProduct = async (req, res) => {
             return res.status(400).json({ message: 'Id invalido' });
         }
 
-        if (req.file?.filename) {
-            fields.url_image = req.file.filename;
+        if (req.file?.url) {
+            fields.url_image = req.file.url;
         }
 
         if (Object.keys(fields).length === 0) {
