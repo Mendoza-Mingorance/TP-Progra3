@@ -1,3 +1,4 @@
+import { deleteImage } from '../config/cloudinary.js';
 import Mail from '../config/mail.config.js';
 import { fetchCategoriesModel } from '../models/categories.model.js';
 import {
@@ -88,8 +89,10 @@ export const updateProductPost = async (req, res) => {
         const { id, ...fieldsToUpdate } = req.body;
 
         if (req.file) {
-            fieldsToUpdate.url_image = req.file.filename;
+            fieldsToUpdate.url_image = req.file.path;
         }
+        console.log(fieldsToUpdate);
+        
 
         await updateProductModel(id, fieldsToUpdate);
 
@@ -128,10 +131,11 @@ export const activateProductView = async (req, res) => {
 export const deleteProductView = async (req, res) => {
     const { id } = req.params;
     try {
+        await deleteImage(id);
         await deleteProductModel(id);
         res.status(200).json({ message: 'Producto eliminado' });
     } catch (error) {
-        console.error('Error al eliminra producto:', error.message);
+        console.error('Error al eliminar producto:', error.message);
         res.status(500).json({ message: "Internal server error. Couldn't delete product" });
     }
 };

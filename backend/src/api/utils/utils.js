@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import config from '../config/config.js';
 import bcrypt from 'bcryptjs';
+import { fetchProductByID } from '../models/products.model.js';
 
 // BCRYPT
 export const createHash = (password) => {
